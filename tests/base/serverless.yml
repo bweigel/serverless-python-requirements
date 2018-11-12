@@ -14,12 +14,14 @@ custom:
     slimPatterns: ${file(./slimPatterns.yml):slimPatterns, self:custom.defaults.slimPatterns}
     vendor: ${opt:vendor, ''}
     fileName: ${opt:fileName, 'requirements.txt'}
+    IndividuallyMoveUpModules: ${opt:moveup, self:custom.defaults.IndividuallyMoveUpModules}
   defaults:
     slim: false
     slimPatterns: false
     zip: false
     dockerizePip: false
     individually: false
+    IndividuallyMoveUpModules: true
 
 package:
   individually: ${opt:individually, self:custom.defaults.individually}
@@ -36,3 +38,9 @@ functions:
   hello3:
     handler: handler.hello
     runtime: nodejs6.10
+  hello4:
+    handler: fn2.handler.hello
+    module: fn2
+    package:
+      include:
+        - 'fn2/**'
