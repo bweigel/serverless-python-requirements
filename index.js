@@ -33,6 +33,7 @@ class ServerlessPythonRequirements {
         zip: false,
         cleanupZipHelper: true,
         invalidateCaches: false,
+        IndividuallyMoveModuleUp: true,
         fileName: 'requirements.txt',
         usePipenv: true,
         pythonBin:
@@ -64,7 +65,7 @@ class ServerlessPythonRequirements {
       },
       (this.serverless.service.custom &&
         this.serverless.service.custom.pythonRequirements) ||
-        {}
+      {}
     );
     if (options.dockerizePip === 'non-linux') {
       options.dockerizePip = process.platform !== 'linux';
@@ -88,7 +89,7 @@ class ServerlessPythonRequirements {
       // If no dockerFile is provided, use default image
       const defaultImage = `lambci/lambda:build-${
         this.serverless.service.provider.runtime
-      }`;
+        }`;
       options.dockerImage = options.dockerImage || defaultImage;
     }
     return options;
@@ -167,7 +168,7 @@ class ServerlessPythonRequirements {
         .then(() =>
           injectAllRequirements.bind(this)(
             arguments[1].functionObj &&
-              arguments[1].functionObj.package.artifact
+            arguments[1].functionObj.package.artifact
           )
         );
     };
