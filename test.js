@@ -134,3 +134,19 @@ test('py3.6 can package flask with slim option', t => {
   );
   t.end();
 });
+
+test('can package individually without moving modules to root of zip-File', t => {
+  process.chdir('tests/base');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls(['--individually=true', '--moveup=false', 'package']);
+  const zipfiles = listZipFiles(
+    '.serverless/fn2-sls-py-req-test-dev-hello4.zip'
+  );
+  t.true(
+    zipfiles.includes(`fn2${sep}__init__.py`),
+    'fn2 is packaged as module'
+  );
+  t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
+  t.end();
+});
