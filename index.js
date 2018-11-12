@@ -47,6 +47,7 @@ class ServerlessPythonRequirements {
         useDownloadCache: false,
         cacheLocation: false,
         staticCacheMaxVersions: 0,
+        IndividuallyMoveUpModules: true,
         pipCmdExtraArgs: [],
         noDeploy: [
           'boto3',
