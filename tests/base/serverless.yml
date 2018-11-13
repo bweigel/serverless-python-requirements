@@ -40,7 +40,7 @@ functions:
     runtime: nodejs6.10
   hello4:
     handler: fn2.handler.hello
-    # module: fn2
+    module: fn2
     package:
       include:
         - 'fn2/**'
