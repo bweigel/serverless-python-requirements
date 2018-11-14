@@ -86,7 +86,7 @@ const listRequirementsZipFiles = filename => {
   const zip = deasync(new JSZip().loadAsync(readFileSync(filename)));
   const reqsBuffer = deasync(zip.file('.requirements.zip').async('nodebuffer'));
   const reqsZip = deasync(new JSZip().loadAsync(reqsBuffer));
-  return Object.keys(reqsZip.files)
+  return Object.keys(reqsZip.files);
 };
 
 test('default pythonBin can package flask with default options', t => {
@@ -150,10 +150,18 @@ test("py3.6 doesn't package bottle with zip option", t => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
-  perl(['-p', "-i'.bak'", '-e', 's/(pythonRequirements:$)/\\1\\n    noDeploy: [bottle]/', 'serverless.yml'])
+  perl([
+    '-p',
+    "-i'.bak'",
+    '-e',
+    's/(pythonRequirements:$)/\\1\\n    noDeploy: [bottle]/',
+    'serverless.yml'
+  ]);
   sls([`--pythonBin=${getPythonBin(3)}`, '--zip=true', 'package']);
   const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
-  const zippedReqs = listRequirementsZipFiles('.serverless/sls-py-req-test.zip');
+  const zippedReqs = listRequirementsZipFiles(
+    '.serverless/sls-py-req-test.zip'
+  );
   t.true(
     zipfiles.includes('.requirements.zip'),
     'zipped requirements are packaged'
@@ -163,8 +171,14 @@ test("py3.6 doesn't package bottle with zip option", t => {
     zipfiles.includes(`flask${sep}__init__.py`),
     "flask isn't packaged on its own"
   );
-  t.true(zippedReqs.includes(`flask/__init__.py`), 'flask is packaged in the .requirements.zip file');
-  t.false(zippedReqs.includes(`bottle.py`), 'bottle is not packaged in the .requirements.zip file');
+  t.true(
+    zippedReqs.includes(`flask/__init__.py`),
+    'flask is packaged in the .requirements.zip file'
+  );
+  t.false(
+    zippedReqs.includes(`bottle.py`),
+    'bottle is not packaged in the .requirements.zip file'
+  );
   t.end();
 });
 
