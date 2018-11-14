@@ -15,6 +15,8 @@ custom:
     vendor: ${opt:vendor, ''}
     fileName: ${opt:fileName, 'requirements.txt'}
     IndividuallyMoveUpModules: ${opt:moveup, self:custom.defaults.IndividuallyMoveUpModules}
+    useStaticCache: ${opt:useStaticCache, self:custom.defaults.useStaticCache}
+    useDownloadCache: ${opt:useDownloadCache, self:custom.defaults.useDownloadCache}
   defaults:
     slim: false
     slimPatterns: false
@@ -22,6 +24,8 @@ custom:
     dockerizePip: false
     individually: false
     IndividuallyMoveUpModules: true
+    useStaticCache: false
+    useDownloadCache: false
 
 package:
   individually: ${opt:individually, self:custom.defaults.individually}
