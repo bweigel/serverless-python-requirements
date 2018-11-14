@@ -86,7 +86,7 @@ const listRequirementsZipFiles = filename => {
   const zip = deasync(new JSZip().loadAsync(readFileSync(filename)));
   const reqsBuffer = deasync(zip.file('.requirements.zip').async('nodebuffer'));
   const reqsZip = deasync(new JSZip().loadAsync(reqsBuffer));
-  return Object.keys(reqsZip.files)
+  return Object.keys(reqsZip.files);
 };
 
 test('default pythonBin can package flask with default options', t => {
@@ -142,20 +142,65 @@ test('py3.6 can package flask with slim option', t => {
   t.end();
 });
 
-
 test('can package individually without moving modules to root of zip-File', t => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
   sls(['--individually=true', '--moveup=false', 'package']);
-  const zipfiles = listZipFiles(
-    '.serverless/fn2-sls-py-req-test-dev-hello4.zip'
+
+
+  const zipfiles_hello = listZipFiles(
+    '.serverless/hello.zip'
+  );
+  t.false(
+    zipfiles_hello.includes(`fn2${sep}__init__.py`),
+    'fn2 is not packaged in function hello'
   );
   t.true(
-    zipfiles.includes(`fn2${sep}__init__.py`),
-    'fn2 is packaged as module'
+    zipfiles_hello.includes('handler.py'),
+    'handler.py is packaged in function hello'
   );
-  t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
+  t.false(
+    zipfiles_hello.includes(`dataclasses${sep}__init__.py`),
+    'dataclasses is not packaged in function hello'
+  );
+  t.true(
+    zipfiles_hello.includes(`flask${sep}__init__.py`),
+    'flask is packaged in function hello'
+  );
+
+  const zipfiles_hello4 = listZipFiles(
+    '.serverless/hello4.zip'
+  );
+  t.true(
+    zipfiles_hello4.includes(`fn2${sep}__init__.py`),
+    'fn2 is packaged as module in function hello4'
+  );
+  t.true(
+    zipfiles_hello4.includes(`dataclasses${sep}__init__.py`),
+    'dataclasses is packaged in function hello4'
+  );
+  t.false(
+    zipfiles_hello4.includes(`flask${sep}__init__.py`),
+    'flask is not packaged in function hello4'
+  );
+
+  const zipfiles_hello5 = listZipFiles(
+    '.serverless/hello5.zip'
+  );
+  t.true(
+    zipfiles_hello5.includes(`fn2${sep}__init__.py`),
+    'fn2 is packaged as module in function hello5'
+  );
+  t.true(
+    zipfiles_hello5.includes(`dataclasses${sep}__init__.py`),
+    'dataclasses is packaged in function hello5'
+  );
+  t.false(
+    zipfiles_hello5.includes(`flask${sep}__init__.py`),
+    'flask is not packaged in function hello5'
+  );
+
   t.end();
 });
 
@@ -167,10 +212,18 @@ test("py3.6 doesn't package bottle with zip option", t => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
-  perl(['-p', "-i'.bak'", '-e', 's/(pythonRequirements:$)/\\1\\n    noDeploy: [bottle]/', 'serverless.yml'])
+  perl([
+    '-p',
+    "-i'.bak'",
+    '-e',
+    's/(pythonRequirements:$)/\\1\\n    noDeploy: [bottle]/',
+    'serverless.yml'
+  ]);
   sls([`--pythonBin=${getPythonBin(3)}`, '--zip=true', 'package']);
   const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
-  const zippedReqs = listRequirementsZipFiles('.serverless/sls-py-req-test.zip');
+  const zippedReqs = listRequirementsZipFiles(
+    '.serverless/sls-py-req-test.zip'
+  );
   t.true(
     zipfiles.includes('.requirements.zip'),
     'zipped requirements are packaged'
@@ -180,7 +233,13 @@ test("py3.6 doesn't package bottle with zip option", t => {
     zipfiles.includes(`flask${sep}__init__.py`),
     "flask isn't packaged on its own"
   );
-  t.true(zippedReqs.includes(`flask/__init__.py`), 'flask is packaged in the .requirements.zip file');
-  t.false(zippedReqs.includes(`bottle.py`), 'bottle is not packaged in the .requirements.zip file');
+  t.true(
+    zippedReqs.includes(`flask/__init__.py`),
+    'flask is packaged in the .requirements.zip file'
+  );
+  t.false(
+    zippedReqs.includes(`bottle.py`),
+    'bottle is not packaged in the .requirements.zip file'
+  );
   t.end();
 });

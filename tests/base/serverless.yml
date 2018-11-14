@@ -33,8 +33,6 @@ package:
 functions:
   hello:
     handler: handler.hello
-  hello2:
-    handler: handler.hello
   hello3:
     handler: handler.hello
     runtime: nodejs6.10
@@ -44,3 +42,12 @@ functions:
     package:
       include:
         - 'fn2/**'
+  hello2:
+    handler: handler.hello
+  hello5:
+    handler: fn2.handler.hello2
+    module: fn2
+    package:
+      include:
+        - 'fn2/**'  
+        - 'common/__init__.py'
