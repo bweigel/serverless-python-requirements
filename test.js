@@ -148,6 +148,7 @@ test('can package individually without moving modules to root of zip-File', t =>
   npm(['i', path]);
   sls(['--individually=true', '--moveup=false', 'package']);
 
+
   const zipfiles_hello = listZipFiles('.serverless/hello.zip');
   t.false(
     zipfiles_hello.includes(`fn2${sep}__init__.py`),
@@ -179,6 +180,10 @@ test('can package individually without moving modules to root of zip-File', t =>
     zipfiles_hello4.includes(`flask${sep}__init__.py`),
     'flask is not packaged in function hello4'
   );
+  t.false(
+    zipfiles_hello4.includes(`common${sep}__init__.py`),
+    'module common is not packaged in function hello4'
+  );
 
   const zipfiles_hello5 = listZipFiles('.serverless/hello5.zip');
   t.true(
@@ -192,6 +197,32 @@ test('can package individually without moving modules to root of zip-File', t =>
   t.false(
     zipfiles_hello5.includes(`flask${sep}__init__.py`),
     'flask is not packaged in function hello5'
+  );
+  t.true(
+    zipfiles_hello5.includes(`common${sep}__init__.py`),
+    'module common is packaged in function hello5'
+  );
+
+  const zipfiles_hello6 = listZipFiles('.serverless/hello6.zip');
+  t.true(
+    zipfiles_hello6.includes(`fn3${sep}__init__.py`),
+    'fn3 is packaged as module in function hello6'
+  );
+  t.false(
+    zipfiles_hello6.includes(`fn2${sep}__init__.py`),
+    'fn2 is not packaged in function hello6'
+  );
+  t.false(
+    zipfiles_hello6.includes(`dataclasses.py`),
+    'dataclasses is packaged in function hello6'
+  );
+  t.false(
+    zipfiles_hello6.includes(`flask${sep}__init__.py`),
+    'flask is not packaged in function hello6'
+  );
+  t.true(
+    zipfiles_hello6.includes(`common${sep}__init__.py`),
+    'module common is packaged in function hello6'
   );
 
   t.end();
@@ -234,6 +265,10 @@ test('can package individually without moving modules to root of zip-File with o
     zipfiles_hello4.includes(`flask${sep}__init__.py`),
     'flask is not packaged in function hello4'
   );
+  t.false(
+    zipfiles_hello4.includes(`common${sep}__init__.py`),
+    'module common is not packaged in function hello4'
+  );
 
   const zipfiles_hello5 = listZipFiles('.serverless/hello5.zip');
   t.true(
@@ -248,6 +283,32 @@ test('can package individually without moving modules to root of zip-File with o
     zipfiles_hello5.includes(`flask${sep}__init__.py`),
     'flask is not packaged in function hello5'
   );
+  t.true(
+    zipfiles_hello5.includes(`common${sep}__init__.py`),
+    'module common is packaged in function hello5'
+  );
+
+  const zipfiles_hello6 = listZipFiles('.serverless/hello6.zip');
+  t.true(
+    zipfiles_hello6.includes(`fn3${sep}__init__.py`),
+    'fn3 is packaged as module in function hello6'
+  );
+  t.false(
+    zipfiles_hello6.includes(`fn2${sep}__init__.py`),
+    'fn2 is not packaged in function hello6'
+  );
+  t.false(
+    zipfiles_hello6.includes(`dataclasses.py`),
+    'dataclasses is packaged in function hello6'
+  );
+  t.false(
+    zipfiles_hello6.includes(`flask${sep}__init__.py`),
+    'flask is not packaged in function hello6'
+  );
+  t.true(
+    zipfiles_hello6.includes(`common${sep}__init__.py`),
+    'module common is packaged in function hello6'
+  );
 
   t.end();
 });
@@ -257,6 +318,7 @@ test('can package individually without moving modules to root of zip-File with u
   const path = npm(['pack', '../..']);
   npm(['i', path]);
   sls(['--individually=true', '--moveup=false', '--useStaticCache=true', '--useDownloadCache=true', 'package']);
+
 
   const zipfiles_hello = listZipFiles('.serverless/hello.zip');
   t.false(
@@ -289,6 +351,10 @@ test('can package individually without moving modules to root of zip-File with u
     zipfiles_hello4.includes(`flask${sep}__init__.py`),
     'flask is not packaged in function hello4'
   );
+  t.false(
+    zipfiles_hello4.includes(`common${sep}__init__.py`),
+    'module common is not packaged in function hello4'
+  );
 
   const zipfiles_hello5 = listZipFiles('.serverless/hello5.zip');
   t.true(
@@ -302,6 +368,32 @@ test('can package individually without moving modules to root of zip-File with u
   t.false(
     zipfiles_hello5.includes(`flask${sep}__init__.py`),
     'flask is not packaged in function hello5'
+  );
+  t.true(
+    zipfiles_hello5.includes(`common${sep}__init__.py`),
+    'module common is packaged in function hello5'
+  );
+
+  const zipfiles_hello6 = listZipFiles('.serverless/hello6.zip');
+  t.true(
+    zipfiles_hello6.includes(`fn3${sep}__init__.py`),
+    'fn3 is packaged as module in function hello6'
+  );
+  t.false(
+    zipfiles_hello6.includes(`fn2${sep}__init__.py`),
+    'fn2 is not packaged in function hello6'
+  );
+  t.false(
+    zipfiles_hello6.includes(`dataclasses.py`),
+    'dataclasses is packaged in function hello6'
+  );
+  t.false(
+    zipfiles_hello6.includes(`flask${sep}__init__.py`),
+    'flask is not packaged in function hello6'
+  );
+  t.true(
+    zipfiles_hello6.includes(`common${sep}__init__.py`),
+    'module common is packaged in function hello6'
   );
 
   t.end();
