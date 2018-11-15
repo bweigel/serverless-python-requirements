@@ -408,6 +408,97 @@ test('can package individually without moving modules to root of zip-File with u
   t.end();
 });
 
+test('can package individually, moving modules to root of zip-File with IndividuallyMoveUpModules=true', t => {
+  process.chdir('tests/base');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls(['--individually=true', '--moveup=true', 'package']);
+
+  const zipfiles_hello = listZipFiles('.serverless/hello.zip');
+  t.false(
+    zipfiles_hello.includes(`fn2${sep}__init__.py`),
+    'fn2 is not packaged in function hello'
+  );
+  t.true(
+    zipfiles_hello.includes('handler.py'),
+    'handler.py is packaged in function hello'
+  );
+  t.false(
+    zipfiles_hello.includes(`dataclasses.py`),
+    'dataclasses is not packaged in function hello'
+  );
+  t.true(
+    zipfiles_hello.includes(`flask${sep}__init__.py`),
+    'flask is packaged in function hello'
+  );
+
+  const zipfiles_hello4 = listZipFiles(
+    '.serverless/fn2-sls-py-req-test-dev-hello4.zip'
+  );
+  t.true(
+    zipfiles_hello4.includes(`other.py`),
+    'fn2 is moved to root in function hello4'
+  );
+  t.true(
+    zipfiles_hello4.includes(`dataclasses.py`),
+    'dataclasses is packaged in function hello4'
+  );
+  t.false(
+    zipfiles_hello4.includes(`flask${sep}__init__.py`),
+    'flask is not packaged in function hello4'
+  );
+  t.false(
+    zipfiles_hello4.includes(`common${sep}__init__.py`),
+    'module common is not packaged in function hello4'
+  );
+
+  const zipfiles_hello5 = listZipFiles(
+    '.serverless/fn2-sls-py-req-test-dev-hello5.zip'
+  );
+  t.true(
+    zipfiles_hello5.includes(`other.py`),
+    'fn2 is moved to root in function hello5'
+  );
+  t.true(
+    zipfiles_hello5.includes(`dataclasses.py`),
+    'dataclasses is packaged in function hello5'
+  );
+  t.false(
+    zipfiles_hello5.includes(`flask${sep}__init__.py`),
+    'flask is not packaged in function hello5'
+  );
+  t.true(
+    zipfiles_hello5.includes(`common${sep}__init__.py`),
+    'module common is packaged in function hello5'
+  );
+
+  const zipfiles_hello6 = listZipFiles(
+    '.serverless/fn3-sls-py-req-test-dev-hello6.zip'
+  );
+  t.true(
+    zipfiles_hello6.includes(`fn3_handler.py`),
+    'fn3 is moved to root in function  hello6'
+  );
+  t.false(
+    zipfiles_hello6.includes(`fn2${sep}__init__.py`),
+    'fn2 is not packaged in function hello6'
+  );
+  t.false(
+    zipfiles_hello6.includes(`dataclasses.py`),
+    'dataclasses is packaged in function hello6'
+  );
+  t.false(
+    zipfiles_hello6.includes(`flask${sep}__init__.py`),
+    'flask is not packaged in function hello6'
+  );
+  t.true(
+    zipfiles_hello6.includes(`common${sep}__init__.py`),
+    'module common is packaged in function hello6'
+  );
+
+  t.end();
+});
+
 /*
  * News tests not in test.bats
  */
