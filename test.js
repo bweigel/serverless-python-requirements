@@ -148,7 +148,6 @@ test('can package individually without moving modules to root of zip-File', t =>
   npm(['i', path]);
   sls(['--individually=true', '--moveup=false', 'package']);
 
-
   const zipfiles_hello = listZipFiles('.serverless/hello.zip');
   t.false(
     zipfiles_hello.includes(`fn2${sep}__init__.py`),
@@ -232,7 +231,12 @@ test('can package individually without moving modules to root of zip-File with o
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
-  sls(['--individually=true', '--moveup=false', '--useStaticCache=true', 'package']);
+  sls([
+    '--individually=true',
+    '--moveup=false',
+    '--useStaticCache=true',
+    'package'
+  ]);
 
   const zipfiles_hello = listZipFiles('.serverless/hello.zip');
   t.false(
@@ -317,8 +321,13 @@ test('can package individually without moving modules to root of zip-File with u
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
-  sls(['--individually=true', '--moveup=false', '--useStaticCache=true', '--useDownloadCache=true', 'package']);
-
+  sls([
+    '--individually=true',
+    '--moveup=false',
+    '--useStaticCache=true',
+    '--useDownloadCache=true',
+    'package'
+  ]);
 
   const zipfiles_hello = listZipFiles('.serverless/hello.zip');
   t.false(
@@ -398,7 +407,6 @@ test('can package individually without moving modules to root of zip-File with u
 
   t.end();
 });
-
 
 /*
  * News tests not in test.bats
