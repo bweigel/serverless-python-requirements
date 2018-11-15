@@ -17,6 +17,7 @@ custom:
     IndividuallyMoveUpModules: ${opt:moveup, self:custom.defaults.IndividuallyMoveUpModules}
     useStaticCache: ${opt:useStaticCache, self:custom.defaults.useStaticCache}
     useDownloadCache: ${opt:useDownloadCache, self:custom.defaults.useDownloadCache}
+    cacheLocation: ${opt:cacheLocation, self:custom.defaults.cacheLocation}
   defaults:
     slim: false
     slimPatterns: false
@@ -26,6 +27,7 @@ custom:
     IndividuallyMoveUpModules: true
     useStaticCache: false
     useDownloadCache: false
+    cacheLocation: ''
 
 package:
   individually: ${opt:individually, self:custom.defaults.individually}
@@ -53,12 +55,12 @@ functions:
     module: fn2
     package:
       include:
-        - 'fn2/**'  
+        - 'fn2/**'
         - 'common/__init__.py'
   hello6:
     handler: fn3.fn3_handler.hello
     module: fn3
     package:
       include:
-        - 'fn3/**'  
-        - 'common/__init__.py'        
+        - 'fn3/**'
+        - 'common/__init__.py'

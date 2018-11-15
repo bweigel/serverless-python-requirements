@@ -3,7 +3,7 @@ const deasync = require('deasync-promise');
 const glob = require('glob-all');
 const JSZip = require('jszip');
 const tape = require('tape');
-const { removeSync, readFileSync } = require('fs-extra');
+const { removeSync, readFileSync, pathExistsSync } = require('fs-extra');
 const { sep } = require('path');
 
 const { getUserCachePath } = require('./lib/shared');
@@ -587,6 +587,35 @@ test('can package individually, moving modules to root of zip-File with Individu
   t.true(
     zipfiles_hello6.includes(`common${sep}__init__.py`),
     'module common is packaged in function hello6'
+  );
+
+  t.end();
+});
+
+test('py3.6 uses download cache with useDownloadCache option', t => {
+  process.chdir('tests/base');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls(['--useDownloadCache=true', 'package']);
+
+  const cachepath = getUserCachePath()
+  t.true(
+    pathExistsSync(`${cachepath}${sep}downloadCacheslspyc${sep}http`),
+    'cache directoy exists'
+  );
+
+  t.end();
+});
+
+test('py3.6 uses download cache with cacheLocation option', t => {
+  process.chdir('tests/base');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls(['--useDownloadCache=true', '--cacheLocation=.requirements-cache', 'package']);
+
+  t.true(
+    pathExistsSync(`.requirements-cache${sep}downloadCacheslspyc${sep}http`),
+    'cache directoy exists'
   );
 
   t.end();
