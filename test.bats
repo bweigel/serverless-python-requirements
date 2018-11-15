@@ -1,5 +1,10 @@
 #!/usr/bin/env bats
 
+run_only_test() {
+  if [ "$BATS_TEST_NUMBER" -ne "$1" ]; then
+    skip
+  fi
+}
 
 setup() {
     export SLS_DEBUG=t
@@ -14,6 +19,7 @@ setup() {
     if [ -d "${USR_CACHE_DIR}" ] ; then
       rm -Rf "${USR_CACHE_DIR}"
     fi
+ #   run_only_test 42
 }
 
 teardown() {
@@ -146,22 +152,22 @@ teardown() {
     test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0  
 }
 
-@test "py3.6 uses download cache with useDownloadCache option" {
-    cd tests/base
-    npm i $(npm pack ../..)
-    perl -p -i'.bak' -e 's/(pythonRequirements:$)/\1\n    useDownloadCache: true/' serverless.yml
-    sls package
-    USR_CACHE_DIR=`node -e 'console.log(require("../../lib/shared").getUserCachePath())'`
-    ls $USR_CACHE_DIR/downloadCacheslspyc/http
-}
+# @test "py3.6 uses download cache with useDownloadCache option" {
+#     cd tests/base
+#     npm i $(npm pack ../..)
+#     perl -p -i'.bak' -e 's/(pythonRequirements:$)/\1\n    useDownloadCache: true/' serverless.yml
+#     sls package
+#     USR_CACHE_DIR=`node -e 'console.log(require("../../lib/shared").getUserCachePath())'`
+#     ls $USR_CACHE_DIR/downloadCacheslspyc/http
+# }
 
-@test "py3.6 uses download cache with cacheLocation option" {
-    cd tests/base
-    npm i $(npm pack ../..)
-    perl -p -i'.bak' -e 's/(pythonRequirements:$)/\1\n    useDownloadCache: true\n    cacheLocation: .requirements-cache/' serverless.yml
-    sls package
-    ls .requirements-cache/downloadCacheslspyc/http
-}
+# @test "py3.6 uses download cache with cacheLocation option" {
+#     cd tests/base
+#     npm i $(npm pack ../..)
+#     perl -p -i'.bak' -e 's/(pythonRequirements:$)/\1\n    useDownloadCache: true\n    cacheLocation: .requirements-cache/' serverless.yml
+#     sls package
+#     ls .requirements-cache/downloadCacheslspyc/http
+# }
 
 @test "py3.6 uses download cache with dockerizePip option" {
     cd tests/base
