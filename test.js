@@ -414,7 +414,9 @@ test('can package individually, moving modules to root of zip-File with Individu
   npm(['i', path]);
   sls(['--individually=true', '--moveup=true', 'package']);
 
-  const zipfiles_hello = listZipFiles('.serverless/hello.zip');
+  const zipfiles_hello = listZipFiles(
+    '.serverless/root-sls-py-req-test-dev-hello.zip'
+  );
   t.false(
     zipfiles_hello.includes(`fn2${sep}__init__.py`),
     'fn2 is not packaged in function hello'
