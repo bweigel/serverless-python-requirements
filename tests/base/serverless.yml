@@ -56,7 +56,7 @@ functions:
         - 'fn2/**'  
         - 'common/__init__.py'
   hello6:
-    handler: fn3.handler.hello
+    handler: fn3.fn3_handler.hello
     module: fn3
     package:
       include:
