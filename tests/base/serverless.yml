@@ -12,6 +12,7 @@ custom:
     dockerizePip: ${opt:dockerizePip, self:custom.defaults.dockerizePip}
     slim: ${opt:slim, self:custom.defaults.slim}
     slimPatterns: ${file(./slimPatterns.yml):slimPatterns, self:custom.defaults.slimPatterns}
+    slimPatternsAppendDefaults: ${opt:slimPatternsAppendDefaults, self:custom.defaults.slimPatternsAppendDefaults}
     vendor: ${opt:vendor, ''}
     fileName: ${opt:fileName, 'requirements.txt'}
     IndividuallyMoveUpModules: ${opt:moveup, self:custom.defaults.IndividuallyMoveUpModules}
@@ -21,6 +22,7 @@ custom:
   defaults:
     slim: false
     slimPatterns: false
+    slimPatternsAppendDefaults: true
     zip: false
     dockerizePip: false
     individually: false
