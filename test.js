@@ -179,6 +179,10 @@ test('py3.6 can package flask with slim option', t => {
     [],
     'no pyc files packaged'
   );
+  t.true(
+    zipfiles.filter(filename => filename.endsWith('__main__.py')).length > 0,
+    '__main__.py files are packaged'
+  );
   t.end();
 });
 
@@ -201,9 +205,9 @@ test('py3.6 can package flask with slim & slimPatterns options', t => {
     'no pyc files packaged'
   );
   t.deepEqual(
-    zipfiles.filter(filename => filename.includes('.egg-info')),
+    zipfiles.filter(filename => filename.endsWith('__main__.py')),
     [],
-    '.egg-info folders are NOT packaged'
+    '__main__.py files are NOT packaged'
   );
   t.end();
 });
@@ -260,8 +264,8 @@ test(
       '*.pyc files are NOT packaged'
     );
     t.true(
-      zipfiles.filter(filename => filename.includes('.egg-info')).length > 0,
-      '.egg-info folders are packaged'
+      zipfiles.filter(filename => filename.endsWith('__main__.py')).length > 0,
+      '__main__.py files are packaged'
     );
     t.end();
   },
@@ -285,9 +289,9 @@ test(
       '*.pyc files are packaged'
     );
     t.deepEqual(
-      zipfiles.filter(filename => filename.includes('.egg-info')),
+      zipfiles.filter(filename => filename.endsWith('__main__.py')),
       [],
-      '.egg-info folders are NOT packaged'
+      '__main__.py files are NOT packaged'
     );
     t.end();
   },
@@ -426,9 +430,9 @@ test(
       '*.pyc files are packaged'
     );
     t.deepEqual(
-      zipfiles.filter(filename => filename.includes('.egg-info')),
+      zipfiles.filter(filename => filename.endsWith('__main__.py')),
       [],
-      '.egg-info folders are NOT packaged'
+      '__main__.py files are NOT packaged'
     );
     t.end();
   },
@@ -569,8 +573,8 @@ test(
       '*.pyc files are NOT packaged'
     );
     t.true(
-      zipfiles.filter(filename => filename.includes('.egg-info')).length > 0,
-      '.egg-info folders are packaged'
+      zipfiles.filter(filename => filename.endsWith('__main__.py')).length > 0,
+      '__main__.py files are packaged'
     );
     t.end();
   },
@@ -599,9 +603,9 @@ test(
       '*.pyc files are packaged'
     );
     t.deepEqual(
-      zipfiles.filter(filename => filename.includes('.egg-info')),
+      zipfiles.filter(filename => filename.endsWith('__main__.py')),
       [],
-      '.egg-info folders are NOT packaged'
+      '__main__.py files are NOT packaged'
     );
     t.end();
   },
@@ -649,9 +653,9 @@ test('pipenv py3.6 can package flask with slim & slimPatterns options', t => {
     'no pyc files packaged'
   );
   t.deepEqual(
-    zipfiles.filter(filename => filename.includes('.egg-info')),
+    zipfiles.filter(filename => filename.endsWith('__main__.py')),
     [],
-    '.egg-info folders are NOT packaged'
+    '__main__.py files are NOT packaged'
   );
   t.end();
 });
@@ -869,9 +873,9 @@ test('py3.6 can package flask with slim, slimPatterns & slimPatternsAppendDefaul
     'pyc files are packaged'
   );
   t.deepEqual(
-    zipfiles.filter(filename => filename.includes('.egg-info')),
+    zipfiles.filter(filename => filename.endsWith('__main__.py')),
     [],
-    '.egg-info folders are NOT packaged'
+    '__main__.py files are NOT packaged'
   );
   t.end();
 });
@@ -897,9 +901,9 @@ test(
       'pyc files are packaged'
     );
     t.deepEqual(
-      zipfiles.filter(filename => filename.includes('.egg-info')),
+      zipfiles.filter(filename => filename.endsWith('__main__.py')),
       [],
-      '.egg-info folders are NOT packaged'
+      '__main__.py files are NOT packaged'
     );
     t.end();
   },
@@ -925,9 +929,9 @@ test('py2.7 can package flask with slim & slimPatterns & slimPatternsAppendDefau
     'pyc files are packaged'
   );
   t.deepEqual(
-    zipfiles.filter(filename => filename.includes('.egg-info')),
+    zipfiles.filter(filename => filename.endsWith('__main__.py')),
     [],
-    '.egg-info folders are NOT packaged'
+    '__main__.py files are NOT packaged'
   );
   t.end();
 });
@@ -953,9 +957,9 @@ test(
       'pyc files are packaged'
     );
     t.deepEqual(
-      zipfiles.filter(filename => filename.includes('.egg-info')),
+      zipfiles.filter(filename => filename.endsWith('__main__.py')),
       [],
-      '.egg-info folders are NOT packaged'
+      '__main__.py files are NOT packaged'
     );
     t.end();
   },
@@ -976,9 +980,9 @@ test('pipenv py3.6 can package flask with slim & slimPatterns & slimPatternsAppe
     'pyc files are packaged'
   );
   t.deepEqual(
-    zipfiles.filter(filename => filename.includes('.egg-info')),
+    zipfiles.filter(filename => filename.endsWith('__main__.py')),
     [],
-    '.egg-info folders are NOT packaged'
+    '__main__.py files are NOT packaged'
   );
   t.end();
 });
