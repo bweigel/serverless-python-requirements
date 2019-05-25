@@ -8,6 +8,7 @@ plugins:
   - serverless-python-requirements
 custom:
   pythonRequirements:
+    pythonBin: ${opt:pythonBin, self:custom.defaults.pythonBin}
     zip: ${opt:zip, self:custom.defaults.zip}
     dockerizePip: ${opt:dockerizePip, self:custom.defaults.dockerizePip}
     slim: ${opt:slim, self:custom.defaults.slim}
@@ -19,6 +20,7 @@ custom:
     useDownloadCache: ${opt:useDownloadCache, self:custom.defaults.useDownloadCache}
     cacheLocation: ${opt:cacheLocation, ''}
   defaults:
+    pythonBin: python
     slim: false
     slimPatterns: false
     slimPatternsAppendDefaults: true
