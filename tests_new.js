@@ -389,16 +389,16 @@ test(
 );
 
 
-// test('pipenv py3.6 can package flask with default options', t => {
-//   process.chdir('tests/pipenv');
-//   const path = npm(['pack', '../..']);
-//   npm(['i', path]);
-//   sls(['package']);
-//   const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
-//   t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
-//   t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
-//   t.end();
-// });
+test(`pipenv ${testParams.pythonBin} can package flask with default options`, t => {
+  process.chdir('tests/pipenv');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls([`--pythonBin=${testParams.pythonBin}`, 'package']);
+  const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
+  t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
+  t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
+  t.end();
+});
 
 // test('pipenv py3.6 can package flask with slim option', t => {
 //   process.chdir('tests/pipenv');
