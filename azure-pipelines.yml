@@ -120,8 +120,7 @@ jobs:
       pip install poetry==1.0.0a2
     displayName: 'install python dependencies'    
   - script: |
-      node tests_new.js --pythonBin $(pythonBin) | ./node_modules/tap-junit/bin/tap-junit -o output/tests -n TEST-results.xml
-      echo $?
+      node tests_new.js --pythonBin $(pythonBin) 
     displayName: 'run tests'    
   - task: PublishTestResults@2
     inputs:
