@@ -1,0 +1,131 @@
+# Node.js
+# Build a general Node.js project with npm.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- master
+
+jobs:
+
+- job: Prebuild
+  displayName: Pre-build checks
+
+  pool:
+    vmImage: ubuntu-16.04
+
+  steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '10.x'
+    displayName: 'Install Node.js'
+  - task: Npm@1
+    inputs:
+      command: 'install'
+  - script: |
+      npm run lint
+    displayName: 'run lint'  
+
+  
+- job: Linux_PR_Tests
+  displayName: Linux PR tests
+  dependsOn: Prebuild
+  condition: succeeded()
+
+  pool:
+    vmImage: ubuntu-16.04
+
+  strategy:
+    matrix:
+      Python27:
+        python.version: '2.7'
+        python.sls_python_bin: python2.7
+      Python36:
+        python.version: '3.6'
+        python.sls_python_bin: python3.6
+      Python37:
+        python.version: '3.7'
+        python.sls_python_bin: python3.7
+
+  variables:
+    pythonBin: '$(python.sls_python_bin)'
+
+  steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '10.x'
+    displayName: 'Install Node.js'
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '$(python.version)'
+    displayName: 'Use Python $(python.version)'
+  - script: |
+      npm i -g serverless
+    displayName: 'install serverless globally'
+  - task: Npm@1
+    inputs:
+      command: 'install'    
+  - script: |
+      pip install pipenv
+      pip install poetry==1.0.0a2
+    displayName: 'install python dependencies'    
+  - script: |
+      node tests_new.js --pythonBin $(pythonBin) | ./node_modules/tap-junit/bin/tap-junit -o output/tests -n TEST-results.xml
+      echo $?
+    displayName: 'run tests'
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit, cTest
+      testResultsFiles: '**/TEST-results.xml' 
+      
+- job: Windows_PR_Tests
+  displayName: Windows PR tests
+  dependsOn: Prebuild
+  condition: succeeded()
+
+  pool:
+    vmImage:  vs2017-win2016
+
+  strategy:
+    matrix:
+      Python27:
+        python.version: '2.7'
+        python.sls_python_bin: python2.7
+      Python36:
+        python.version: '3.6'
+        python.sls_python_bin: python3.6
+      Python37:
+        python.version: '3.7'
+        python.sls_python_bin: python3.7
+
+  variables:
+    pythonBin: '$(python.sls_python_bin)'
+
+  steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '10.x'
+    displayName: 'Install Node.js'
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '$(python.version)'
+    displayName: 'Use Python $(python.version)'    
+  - script: |
+      npm i -g serverless
+    displayName: 'install serverless globally'    
+  - task: Npm@1
+    inputs:
+      command: 'install'
+  - script: |
+      pip install pipenv
+      pip install poetry==1.0.0a2
+    displayName: 'install python dependencies'    
+  - script: |
+      node tests_new.js --pythonBin $(pythonBin) | ./node_modules/tap-junit/bin/tap-junit -o output/tests -n TEST-results.xml
+      echo $?
+    displayName: 'run tests'    
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit, cTest
+      testResultsFiles: '**/TEST-results.xml'     
+
