@@ -71,8 +71,8 @@ jobs:
     displayName: 'install python dependencies'    
   - bash: |
       node tests_new.js --pythonBin $(pythonBin) | ./node_modules/tap-junit/bin/tap-junit -o output/tests -n python$(pythonVersion)-TEST-results.xml
-      echo $?
     displayName: 'run tests'
+    continueOnError: "true" 
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit, cTest
@@ -123,8 +123,8 @@ jobs:
     displayName: 'install python dependencies'    
   - bash: |
       node tests_new.js --pythonBin $(pythonBin) | ./node_modules/tap-junit/bin/tap-junit -o output/tests -n python$(pythonVersion)-TEST-results.xml
-      echo $?
-    displayName: 'run tests'    
+    displayName: 'run tests'   
+    continueOnError: "true" 
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit, cTest
