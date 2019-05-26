@@ -1190,252 +1190,258 @@ test(
   { skip: !canUseDocker() || process.platform === 'win32' }
 );
 
-// test(`${testParams.pythonBin} uses download cache with useDownloadCache option', t => {
-//   process.chdir('tests/base');
-//   const path = npm(['pack', '../..']);
-//   npm(['i', path]);
-//   sls(['--useDownloadCache=true', 'package']);
-//   const cachepath = getUserCachePath();
-//   t.true(
-//     pathExistsSync(`${cachepath}${sep}downloadCacheslspyc${sep}http`),
-//     'cache directoy exists'
-//   );
-//   t.end();
-// });
+test(`${testParams.pythonBin} uses download cache with useDownloadCache option`, t => {
+  process.chdir('tests/base');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls([`--pythonBin=${testParams.pythonBin}`, '--useDownloadCache=true', 'package']);
+  const cachepath = getUserCachePath();
+  t.true(
+    pathExistsSync(`${cachepath}${sep}downloadCacheslspyc${sep}http`),
+    'cache directoy exists'
+  );
+  t.end();
+});
 
-// test(`${testParams.pythonBin} uses download cache with cacheLocation option', t => {
-//   process.chdir('tests/base');
-//   const path = npm(['pack', '../..']);
-//   npm(['i', path]);
-//   sls([
-//     '--useDownloadCache=true',
-//     '--cacheLocation=.requirements-cache',
-//     'package'
-//   ]);
-//   t.true(
-//     pathExistsSync(`.requirements-cache${sep}downloadCacheslspyc${sep}http`),
-//     'cache directoy exists'
-//   );
-//   t.end();
-// });
+test(`${testParams.pythonBin} uses download cache with cacheLocation option`, t => {
+  process.chdir('tests/base');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls([
+    `--pythonBin=${testParams.pythonBin}`,
+    '--useDownloadCache=true',
+    '--cacheLocation=.requirements-cache',
+    'package'
+  ]);
+  t.true(
+    pathExistsSync(`.requirements-cache${sep}downloadCacheslspyc${sep}http`),
+    'cache directoy exists'
+  );
+  t.end();
+});
 
-// test(
-//   `${testParams.pythonBin} uses download cache with dockerizePip option',
-//   t => {
-//     process.chdir('tests/base');
-//     const path = npm(['pack', '../..']);
-//     npm(['i', path]);
-//     sls(['--useDownloadCache=true', '--dockerizePip=true', 'package']);
-//     const cachepath = getUserCachePath();
-//     t.true(
-//       pathExistsSync(`${cachepath}${sep}downloadCacheslspyc${sep}http`),
-//       'cache directoy exists'
-//     );
-//     t.end();
-//   },
-//   { skip: !canUseDocker() }
-// );
+test(
+  `${testParams.pythonBin} uses download cache with dockerizePip option`,
+  t => {
+    process.chdir('tests/base');
+    const path = npm(['pack', '../..']);
+    npm(['i', path]);
+    sls([`--pythonBin=${testParams.pythonBin}`, '--useDownloadCache=true', '--dockerizePip=true', 'package']);
+    const cachepath = getUserCachePath();
+    t.true(
+      pathExistsSync(`${cachepath}${sep}downloadCacheslspyc${sep}http`),
+      'cache directoy exists'
+    );
+    t.end();
+  },
+  { skip: !canUseDocker() }
+);
 
-// test(
-//   `${testParams.pythonBin} uses download cache with dockerizePip + cacheLocation option',
-//   t => {
-//     process.chdir('tests/base');
-//     const path = npm(['pack', '../..']);
-//     npm(['i', path]);
-//     sls([
-//       '--useDownloadCache=true',
-//       '--dockerizePip=true',
-//       '--cacheLocation=.requirements-cache',
-//       'package'
-//     ]);
-//     t.true(
-//       pathExistsSync(`.requirements-cache${sep}downloadCacheslspyc${sep}http`),
-//       'cache directoy exists'
-//     );
-//     t.end();
-//   },
-//   { skip: !canUseDocker() }
-// );
+test(
+  `${testParams.pythonBin} uses download cache with dockerizePip + cacheLocation option`,
+  t => {
+    process.chdir('tests/base');
+    const path = npm(['pack', '../..']);
+    npm(['i', path]);
+    sls([
+      `--pythonBin=${testParams.pythonBin}`,
+      '--useDownloadCache=true',
+      '--dockerizePip=true',
+      '--cacheLocation=.requirements-cache',
+      'package'
+    ]);
+    t.true(
+      pathExistsSync(`.requirements-cache${sep}downloadCacheslspyc${sep}http`),
+      'cache directoy exists'
+    );
+    t.end();
+  },
+  { skip: !canUseDocker() }
+);
 
-// test(`${testParams.pythonBin} uses static and download cache', t => {
-//   process.chdir('tests/base');
-//   const path = npm(['pack', '../..']);
-//   npm(['i', path]);
-//   sls(['--useDownloadCache=true', '--useStaticCache=true', 'package']);
-//   const cachepath = getUserCachePath();
-//   const cacheFolderHash = sha256Path('.serverless/requirements.txt');
-//   t.true(
-//     pathExistsSync(`${cachepath}${sep}downloadCacheslspyc${sep}http`),
-//     'http exists in download-cache'
-//   );
-//   t.true(
-//     pathExistsSync(`${cachepath}${sep}${cacheFolderHash}_slspyc${sep}flask`),
-//     'flask exists in static-cache'
-//   );
-//   t.end();
-// });
+test(`${testParams.pythonBin} uses static and download cache`, t => {
+  process.chdir('tests/base');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls([`--pythonBin=${testParams.pythonBin}`, '--useDownloadCache=true', '--useStaticCache=true', 'package']);
+  const cachepath = getUserCachePath();
+  const cacheFolderHash = sha256Path('.serverless/requirements.txt');
+  t.true(
+    pathExistsSync(`${cachepath}${sep}downloadCacheslspyc${sep}http`),
+    'http exists in download-cache'
+  );
+  t.true(
+    pathExistsSync(`${cachepath}${sep}${cacheFolderHash}_slspyc${sep}flask`),
+    'flask exists in static-cache'
+  );
+  t.end();
+});
 
-// test(
-//   `${testParams.pythonBin} uses static and download cache with dockerizePip option',
-//   t => {
-//     process.chdir('tests/base');
-//     const path = npm(['pack', '../..']);
-//     npm(['i', path]);
-//     sls([
-//       '--useDownloadCache=true',
-//       '--useStaticCache=true',
-//       '--dockerizePip=true',
-//       'package'
-//     ]);
-//     const cachepath = getUserCachePath();
-//     const cacheFolderHash = sha256Path('.serverless/requirements.txt');
-//     t.true(
-//       pathExistsSync(`${cachepath}${sep}downloadCacheslspyc${sep}http`),
-//       'http exists in download-cache'
-//     );
-//     t.true(
-//       pathExistsSync(`${cachepath}${sep}${cacheFolderHash}_slspyc${sep}flask`),
-//       'flask exists in static-cache'
-//     );
-//     t.end();
-//   },
-//   { skip: !canUseDocker() }
-// );
+test(
+  `${testParams.pythonBin} uses static and download cache with dockerizePip option`,
+  t => {
+    process.chdir('tests/base');
+    const path = npm(['pack', '../..']);
+    npm(['i', path]);
+    sls([
+      `--pythonBin=${testParams.pythonBin}`,
+      '--useDownloadCache=true',
+      '--useStaticCache=true',
+      '--dockerizePip=true',
+      'package'
+    ]);
+    const cachepath = getUserCachePath();
+    const cacheFolderHash = sha256Path('.serverless/requirements.txt');
+    t.true(
+      pathExistsSync(`${cachepath}${sep}downloadCacheslspyc${sep}http`),
+      'http exists in download-cache'
+    );
+    t.true(
+      pathExistsSync(`${cachepath}${sep}${cacheFolderHash}_slspyc${sep}flask`),
+      'flask exists in static-cache'
+    );
+    t.end();
+  },
+  { skip: !canUseDocker() }
+);
 
-// test(`${testParams.pythonBin} uses static cache', t => {
-//   process.chdir('tests/base');
-//   const path = npm(['pack', '../..']);
-//   npm(['i', path]);
-//   sls(['--useStaticCache=true', 'package']);
-//   const cachepath = getUserCachePath();
-//   const cacheFolderHash = sha256Path('.serverless/requirements.txt');
-//   t.true(
-//     pathExistsSync(`${cachepath}${sep}${cacheFolderHash}_slspyc${sep}flask`),
-//     'flask exists in static-cache'
-//   );
-//   t.true(
-//     pathExistsSync(
-//       `${cachepath}${sep}${cacheFolderHash}_slspyc${sep}.completed_requirements`
-//     ),
-//     '.completed_requirements exists in static-cache'
-//   );
+test(`${testParams.pythonBin} uses static cache`, t => {
+  process.chdir('tests/base');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls([`--pythonBin=${testParams.pythonBin}`, '--useStaticCache=true', 'package']);
+  const cachepath = getUserCachePath();
+  const cacheFolderHash = sha256Path('.serverless/requirements.txt');
+  t.true(
+    pathExistsSync(`${cachepath}${sep}${cacheFolderHash}_slspyc${sep}flask`),
+    'flask exists in static-cache'
+  );
+  t.true(
+    pathExistsSync(
+      `${cachepath}${sep}${cacheFolderHash}_slspyc${sep}.completed_requirements`
+    ),
+    '.completed_requirements exists in static-cache'
+  );
 
-//   // py3.6 checking that static cache actually pulls from cache (by poisoning it)
-//   writeFileSync(
-//     `${cachepath}${sep}${cacheFolderHash}_slspyc${sep}injected_file_is_bad_form`,
-//     'injected new file into static cache folder'
-//   );
-//   sls(['--useStaticCache=true', 'package']);
+  // py3.6 checking that static cache actually pulls from cache (by poisoning it)
+  writeFileSync(
+    `${cachepath}${sep}${cacheFolderHash}_slspyc${sep}injected_file_is_bad_form`,
+    'injected new file into static cache folder'
+  );
+  sls([`--pythonBin=${testParams.pythonBin}`, '--useStaticCache=true', 'package']);
 
-//   const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
-//   t.true(
-//     zipfiles.includes('injected_file_is_bad_form'),
-//     "static cache is really used when running 'sls package' again"
-//   );
+  const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
+  t.true(
+    zipfiles.includes('injected_file_is_bad_form'),
+    "static cache is really used when running 'sls package' again"
+  );
 
-//   t.end();
-// });
+  t.end();
+});
 
-// test(`${testParams.pythonBin} uses static cache with cacheLocation option', t => {
-//   process.chdir('tests/base');
-//   const path = npm(['pack', '../..']);
-//   npm(['i', path]);
-//   const cachepath = '.requirements-cache';
-//   sls(['--useStaticCache=true', `--cacheLocation=${cachepath}`, 'package']);
-//   const cacheFolderHash = sha256Path('.serverless/requirements.txt');
-//   t.true(
-//     pathExistsSync(`${cachepath}${sep}${cacheFolderHash}_slspyc${sep}flask`),
-//     'flask exists in static-cache'
-//   );
-//   t.true(
-//     pathExistsSync(
-//       `${cachepath}${sep}${cacheFolderHash}_slspyc${sep}.completed_requirements`
-//     ),
-//     '.completed_requirements exists in static-cache'
-//   );
-//   t.end();
-// });
+test(`${testParams.pythonBin} uses static cache with cacheLocation option`, t => {
+  process.chdir('tests/base');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  const cachepath = '.requirements-cache';
+  sls([`--pythonBin=${testParams.pythonBin}`, '--useStaticCache=true', `--cacheLocation=${cachepath}`, 'package']);
+  const cacheFolderHash = sha256Path('.serverless/requirements.txt');
+  t.true(
+    pathExistsSync(`${cachepath}${sep}${cacheFolderHash}_slspyc${sep}flask`),
+    'flask exists in static-cache'
+  );
+  t.true(
+    pathExistsSync(
+      `${cachepath}${sep}${cacheFolderHash}_slspyc${sep}.completed_requirements`
+    ),
+    '.completed_requirements exists in static-cache'
+  );
+  t.end();
+});
 
-// test(
-//   `${testParams.pythonBin} uses static cache with dockerizePip & slim option',
-//   t => {
-//     process.chdir('tests/base');
-//     const path = npm(['pack', '../..']);
-//     npm(['i', path]);
-//     sls([
-//       '--useStaticCache=true',
-//       '--dockerizePip=true',
-//       '--slim=true',
-//       'package'
-//     ]);
-//     const cachepath = getUserCachePath();
-//     const cacheFolderHash = sha256Path('.serverless/requirements.txt');
-//     t.true(
-//       pathExistsSync(`${cachepath}${sep}${cacheFolderHash}_slspyc${sep}flask`),
-//       'flask exists in static-cache'
-//     );
-//     t.true(
-//       pathExistsSync(
-//         `${cachepath}${sep}${cacheFolderHash}_slspyc${sep}.completed_requirements`
-//       ),
-//       '.completed_requirements exists in static-cache'
-//     );
+test(
+  `${testParams.pythonBin} uses static cache with dockerizePip & slim option`,
+  t => {
+    process.chdir('tests/base');
+    const path = npm(['pack', '../..']);
+    npm(['i', path]);
+    sls([
+      `--pythonBin=${testParams.pythonBin}`,
+      '--useStaticCache=true',
+      '--dockerizePip=true',
+      '--slim=true',
+      'package'
+    ]);
+    const cachepath = getUserCachePath();
+    const cacheFolderHash = sha256Path('.serverless/requirements.txt');
+    t.true(
+      pathExistsSync(`${cachepath}${sep}${cacheFolderHash}_slspyc${sep}flask`),
+      'flask exists in static-cache'
+    );
+    t.true(
+      pathExistsSync(
+        `${cachepath}${sep}${cacheFolderHash}_slspyc${sep}.completed_requirements`
+      ),
+      '.completed_requirements exists in static-cache'
+    );
 
-//     // py3.6 checking that static cache actually pulls from cache (by poisoning it)
-//     writeFileSync(
-//       `${cachepath}${sep}${cacheFolderHash}_slspyc${sep}injected_file_is_bad_form`,
-//       'injected new file into static cache folder'
-//     );
-//     sls([
-//       '--useStaticCache=true',
-//       '--dockerizePip=true',
-//       '--slim=true',
-//       'package'
-//     ]);
+    // py3.6 checking that static cache actually pulls from cache (by poisoning it)
+    writeFileSync(
+      `${cachepath}${sep}${cacheFolderHash}_slspyc${sep}injected_file_is_bad_form`,
+      'injected new file into static cache folder'
+    );
+    sls([
+      `--pythonBin=${testParams.pythonBin}`,
+      '--useStaticCache=true',
+      '--dockerizePip=true',
+      '--slim=true',
+      'package'
+    ]);
 
-//     const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
-//     t.true(
-//       zipfiles.includes('injected_file_is_bad_form'),
-//       "static cache is really used when running 'sls package' again"
-//     );
-//     t.deepEqual(
-//       zipfiles.filter(filename => filename.endsWith('.pyc')),
-//       [],
-//       'no pyc files are packaged'
-//     );
+    const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
+    t.true(
+      zipfiles.includes('injected_file_is_bad_form'),
+      "static cache is really used when running 'sls package' again"
+    );
+    t.deepEqual(
+      zipfiles.filter(filename => filename.endsWith('.pyc')),
+      [],
+      'no pyc files are packaged'
+    );
 
-//     t.end();
-//   },
-//   { skip: !canUseDocker() }
-// );
+    t.end();
+  },
+  { skip: !canUseDocker() }
+);
 
-// test(
-//   `${testParams.pythonBin} uses download cache with dockerizePip & slim option',
-//   t => {
-//     process.chdir('tests/base');
-//     const path = npm(['pack', '../..']);
-//     npm(['i', path]);
-//     sls([
-//       '--useDownloadCache=true',
-//       '--dockerizePip=true',
-//       '--slim=true',
-//       'package'
-//     ]);
-//     const cachepath = getUserCachePath();
-//     t.true(
-//       pathExistsSync(`${cachepath}${sep}downloadCacheslspyc${sep}http`),
-//       'http exists in download-cache'
-//     );
+test(
+  `${testParams.pythonBin} uses download cache with dockerizePip & slim option`,
+  t => {
+    process.chdir('tests/base');
+    const path = npm(['pack', '../..']);
+    npm(['i', path]);
+    sls([
+      `--pythonBin=${testParams.pythonBin}`,
+      '--useDownloadCache=true',
+      '--dockerizePip=true',
+      '--slim=true',
+      'package'
+    ]);
+    const cachepath = getUserCachePath();
+    t.true(
+      pathExistsSync(`${cachepath}${sep}downloadCacheslspyc${sep}http`),
+      'http exists in download-cache'
+    );
 
-//     const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
-//     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
-//     t.deepEqual(
-//       zipfiles.filter(filename => filename.endsWith('.pyc')),
-//       [],
-//       'no pyc files are packaged'
-//     );
+    const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
+    t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
+    t.deepEqual(
+      zipfiles.filter(filename => filename.endsWith('.pyc')),
+      [],
+      'no pyc files are packaged'
+    );
 
-//     t.end();
-//   },
-//   { skip: !canUseDocker() }
-// );
+    t.end();
+  },
+  { skip: !canUseDocker() }
+);
