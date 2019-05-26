@@ -1,15 +1,8 @@
 const argv = require('yargs').argv;
 
-const getPythonBin = (python = "python3.6") => {
-  // if (process.platform === 'win32' || process.platform === 'win64')
-  //   //return `c:/${python.replace('.', '')}-x64/python.exe`;
-  //   return "python"
-  // else 
-  return python;
-};
-
 const testParams = {
-  pythonBin: getPythonBin(argv.pythonBin)
+  pythonBin: argv.pythonBin || "python3.6",
+  runtime: argv.runtime || "python3.6"
 };
 
 const crossSpawn = require('cross-spawn');
@@ -241,13 +234,14 @@ test(`${testParams.pythonBin} doesn't package bottle with noDeploy option`, t =>
 });
 
 test(
-  `can package flask with dockerizePip option`,
+  `can package flask with dockerizePip option and runtime=${testParams.runtime}`,
   t => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
     sls([
       '--dockerizePip=true',
+      `--runtime=${testParams.runtime}`,
        'package'
       ]);
 
@@ -263,13 +257,14 @@ test(
 );
 
 test(
-  `can package flask with slim & dockerizePip option`,
+  `can package flask with slim & dockerizePip option and runtime=${testParams.runtime}`,
   t => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
     sls([
       '--dockerizePip=true', 
+      `--runtime=${testParams.runtime}`,
     '--slim=true',
      'package'
     ]);
@@ -290,7 +285,7 @@ test(
 );
 
 test(
-  `can package flask with slim & dockerizePip & slimPatterns options`,
+  `can package flask with slim & dockerizePip & slimPatterns options and runtime=${testParams.runtime}`,
   t => {
     process.chdir('tests/base');
 
@@ -298,6 +293,7 @@ test(
     const path = npm(['pack', '../..']);
     npm(['i', path]);
     sls(['--dockerizePip=true',
+    `--runtime=${testParams.runtime}`,
      '--slim=true', 'package']);
     const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
@@ -317,12 +313,13 @@ test(
 );
 
 test(
-  `can package flask with zip & dockerizePip option`,
+  `can package flask with zip & dockerizePip option and runtime=${testParams.runtime}`,
   t => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
     sls(['--dockerizePip=true',
+    `--runtime=${testParams.runtime}`,
      '--zip=true', 'package']);
 
     const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
@@ -351,12 +348,13 @@ test(
 );
 
 test(
-  `can package flask with zip & slim & dockerizePip option`,
+  `can package flask with zip & slim & dockerizePip option and runtime=${testParams.runtime}`,
   t => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
     sls(['--dockerizePip=true', 
+    `--runtime=${testParams.runtime}`,
     '--zip=true', '--slim=true', 'package']);
 
     const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
@@ -669,13 +667,13 @@ test(`${testParams.pythonBin} can package flask in a project with a space in it`
 });
 
 test(
-  `can package flask in a project with a space in it with docker`,
+  `can package flask in a project with a space in it with docker and runtime=${testParams.runtime}`,
   t => {
     copySync('tests/base', 'tests/base with a space');
     process.chdir('tests/base with a space');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
-    sls(['--dockerizePip=true', 'package']);
+    sls(['--dockerizePip=true', `--runtime=${testParams.runtime}`, 'package']);
     const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
     t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
@@ -758,7 +756,7 @@ test(`${testParams.pythonBin} can package flask with slim, slimPatterns & slimPa
 });
 
 test(
-  `can package flask with slim & dockerizePip & slimPatterns & slimPatternsAppendDefaults=false options`,
+  `can package flask with slim & dockerizePip & slimPatterns & slimPatternsAppendDefaults=false options and runtime=${testParams.runtime}`,
   t => {
     process.chdir('tests/base');
     copySync('_slimPatterns.yml', 'slimPatterns.yml');
@@ -766,6 +764,7 @@ test(
     npm(['i', path]);
     sls([
       '--dockerizePip=true',
+      `--runtime=${testParams.runtime}`,
       '--slim=true',
       '--slimPatternsAppendDefaults=false',
       'package'
