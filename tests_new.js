@@ -1166,7 +1166,7 @@ test(
     chmodSync(`module1${sep}foobar`, perm);
 
     npm(['i', path]);
-    sls([`--pythonBin=${testParams.pythonBin}`, '--dockerizePip=true', 'package']);
+    sls([`--runtime=${testParams.runtime}`, '--dockerizePip=true', 'package']);
 
     const zipfiles_hello = listZipFilesWithMetaData('.serverless/hello1.zip');
 
@@ -1221,12 +1221,12 @@ test(`${testParams.pythonBin} uses download cache with cacheLocation option`, t 
 });
 
 test(
-  `${testParams.pythonBin} uses download cache with dockerizePip option`,
+  `${testParams.runtime} uses download cache with dockerizePip option`,
   t => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
-    sls([`--pythonBin=${testParams.pythonBin}`, '--useDownloadCache=true', '--dockerizePip=true', 'package']);
+    sls([`--runtime=${testParams.runtime}`, '--useDownloadCache=true', '--dockerizePip=true', 'package']);
     const cachepath = getUserCachePath();
     t.true(
       pathExistsSync(`${cachepath}${sep}downloadCacheslspyc${sep}http`),
@@ -1238,13 +1238,13 @@ test(
 );
 
 test(
-  `${testParams.pythonBin} uses download cache with dockerizePip + cacheLocation option`,
+  `${testParams.runtime} uses download cache with dockerizePip + cacheLocation option`,
   t => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
     sls([
-      `--pythonBin=${testParams.pythonBin}`,
+      `--runtime=${testParams.runtime}`,
       '--useDownloadCache=true',
       '--dockerizePip=true',
       '--cacheLocation=.requirements-cache',
@@ -1278,13 +1278,13 @@ test(`${testParams.pythonBin} uses static and download cache`, t => {
 });
 
 test(
-  `${testParams.pythonBin} uses static and download cache with dockerizePip option`,
+  `${testParams.runtime} uses static and download cache with dockerizePip option`,
   t => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
     sls([
-      `--pythonBin=${testParams.pythonBin}`,
+      `--runtime=${testParams.runtime}`,
       '--useDownloadCache=true',
       '--useStaticCache=true',
       '--dockerizePip=true',
@@ -1328,7 +1328,7 @@ test(`${testParams.pythonBin} uses static cache`, t => {
     `${cachepath}${sep}${cacheFolderHash}_slspyc${sep}injected_file_is_bad_form`,
     'injected new file into static cache folder'
   );
-  sls([`--pythonBin=${testParams.pythonBin}`, '--useStaticCache=true', 'package']);
+  sls([`--runtime=${testParams.runtime}`, '--useStaticCache=true', 'package']);
 
   const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
   t.true(
@@ -1360,13 +1360,13 @@ test(`${testParams.pythonBin} uses static cache with cacheLocation option`, t =>
 });
 
 test(
-  `${testParams.pythonBin} uses static cache with dockerizePip & slim option`,
+  `${testParams.runtime} uses static cache with dockerizePip & slim option`,
   t => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
     sls([
-      `--pythonBin=${testParams.pythonBin}`,
+      `--runtime=${testParams.runtime}`,
       '--useStaticCache=true',
       '--dockerizePip=true',
       '--slim=true',
@@ -1391,7 +1391,7 @@ test(
       'injected new file into static cache folder'
     );
     sls([
-      `--pythonBin=${testParams.pythonBin}`,
+      `--runtime=${testParams.runtime}`,
       '--useStaticCache=true',
       '--dockerizePip=true',
       '--slim=true',
@@ -1415,13 +1415,13 @@ test(
 );
 
 test(
-  `${testParams.pythonBin} uses download cache with dockerizePip & slim option`,
+  `${testParams.runtime} uses download cache with dockerizePip & slim option`,
   t => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
     sls([
-      `--pythonBin=${testParams.pythonBin}`,
+      `--runtime=${testParams.runtime}`,
       '--useDownloadCache=true',
       '--dockerizePip=true',
       '--slim=true',
