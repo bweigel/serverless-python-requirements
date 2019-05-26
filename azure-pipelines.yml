@@ -78,7 +78,6 @@ jobs:
       testRunTitle: 'Test results for Python $(python.version) [Linux]'
       testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit, cTest
       testResultsFiles: '**/*-TEST-results.xml' 
-      failTaskOnFailedTests: true
       
 - job: Windows_PR_Tests
   displayName: Windows PR tests
@@ -133,5 +132,4 @@ jobs:
       testRunTitle: 'Test results for Python $(python.version) [Windows]'
       testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit, cTest
       testResultsFiles: '**/*-TEST-results.xml'    
-      failTaskOnFailedTests: true
 
