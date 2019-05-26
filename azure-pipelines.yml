@@ -128,5 +128,5 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit, cTest
-      testResultsFiles: '**/TEST-results.xml'     
+      testResultsFiles: '**/*-TEST-results.xml'    
 
