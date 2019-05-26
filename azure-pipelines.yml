@@ -69,7 +69,7 @@ jobs:
       pip install pipenv
       pip install poetry==1.0.0a2
     displayName: 'install python dependencies'    
-  - script: |
+  - bash: |
       node tests_new.js --pythonBin $(pythonBin) | ./node_modules/tap-junit/bin/tap-junit -o output/tests -n python$(pythonVersion)-TEST-results.xml
       echo $?
     displayName: 'run tests'
@@ -117,11 +117,13 @@ jobs:
     inputs:
       command: 'install'
   - script: |
+      python --version
       pip install pipenv
       pip install poetry==1.0.0a2
     displayName: 'install python dependencies'    
-  - script: |
-      node tests_new.js --pythonBin $(pythonBin) 
+  - bash: |
+      node tests_new.js --pythonBin $(pythonBin) | ./node_modules/tap-junit/bin/tap-junit -o output/tests -n python$(pythonVersion)-TEST-results.xml
+      echo $?
     displayName: 'run tests'    
   - task: PublishTestResults@2
     inputs:
