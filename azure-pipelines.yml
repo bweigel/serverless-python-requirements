@@ -77,6 +77,7 @@ jobs:
     inputs:
       testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit, cTest
       testResultsFiles: '**/*-TEST-results.xml' 
+      failTaskOnFailedTests: true
       
 - job: Windows_PR_Tests
   displayName: Windows PR tests
@@ -129,4 +130,5 @@ jobs:
     inputs:
       testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit, cTest
       testResultsFiles: '**/*-TEST-results.xml'    
+      failTaskOnFailedTests: true
 
