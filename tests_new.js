@@ -3,7 +3,8 @@ const argv = require('yargs').argv;
 const getPythonBin = (python = "python3.6") => {
   if (process.platform === 'win32' || process.platform === 'win64')
     return `c:/${python.replace('.', '')}-x64/python.exe`;
-  else python;
+  else 
+    return python;
 };
 
 const testParams = {
