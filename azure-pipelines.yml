@@ -70,7 +70,7 @@ jobs:
       pip install poetry==1.0.0a2
     displayName: 'install python dependencies'    
   - bash: |
-      node tests_new.js --pythonBin $(pythonBin) | ./node_modules/tap-junit/bin/tap-junit -o output/tests -n python$(pythonVersion)-TEST-results.xml
+      node tests_new.js --pythonBin $(pythonBin) --runtime $(pythonBin) | ./node_modules/tap-junit/bin/tap-junit -o output/tests -n python$(pythonVersion)-TEST-results.xml
     displayName: 'run tests'
   - task: PublishTestResults@2
     condition: succeededOrFailed()
@@ -124,7 +124,7 @@ jobs:
       pip install poetry==1.0.0a2
     displayName: 'install python dependencies'    
   - bash: |
-      node tests_new.js --pythonBin python | ./node_modules/tap-junit/bin/tap-junit -o output/tests -n python$(pythonVersion)-TEST-results.xml
+      node tests_new.js --pythonBin python --runtime $(pythonBin) | ./node_modules/tap-junit/bin/tap-junit -o output/tests -n python$(pythonVersion)-TEST-results.xml
     displayName: 'run tests'   
   - task: PublishTestResults@2
     condition: succeededOrFailed()
