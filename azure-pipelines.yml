@@ -75,7 +75,7 @@ jobs:
   - task: PublishTestResults@2
     condition: succeededOrFailed()
     inputs:
-      testRunTitle: 'Publish test results for Python $(python.version)'
+      testRunTitle: 'Test results for Python $(python.version) [Linux]'
       testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit, cTest
       testResultsFiles: '**/*-TEST-results.xml' 
       failTaskOnFailedTests: true
@@ -130,7 +130,7 @@ jobs:
   - task: PublishTestResults@2
     condition: succeededOrFailed()
     inputs:
-      testRunTitle: 'Publish test results for Python $(python.version)'
+      testRunTitle: 'Test results for Python $(python.version) [Windows]'
       testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit, cTest
       testResultsFiles: '**/*-TEST-results.xml'    
       failTaskOnFailedTests: true
