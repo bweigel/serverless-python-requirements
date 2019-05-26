@@ -48,6 +48,7 @@ jobs:
 
   variables:
     pythonBin: '$(python.sls_python_bin)'
+    pythonVersion: '$(python.version)'
 
   steps:
   - task: NodeTool@0
@@ -68,14 +69,14 @@ jobs:
       pip install pipenv
       pip install poetry==1.0.0a2
     displayName: 'install python dependencies'    
-  - script: |
-      node tests_new.js --pythonBin $(pythonBin) | ./node_modules/tap-junit/bin/tap-junit -o output/tests -n TEST-results.xml
-      echo $?
+  - bash: |
+      node tests_new.js --pythonBin $(pythonBin) | ./node_modules/tap-junit/bin/tap-junit -o output/tests -n python$(pythonVersion)-TEST-results.xml
     displayName: 'run tests'
+    continueOnError: "true" 
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit, cTest
-      testResultsFiles: '**/TEST-results.xml' 
+      testResultsFiles: '**/*-TEST-results.xml' 
       
 - job: Windows_PR_Tests
   displayName: Windows PR tests
@@ -116,15 +117,16 @@ jobs:
     inputs:
       command: 'install'
   - script: |
+      python --version
       pip install pipenv
       pip install poetry==1.0.0a2
     displayName: 'install python dependencies'    
-  - script: |
-      node tests_new.js --pythonBin $(pythonBin) | ./node_modules/tap-junit/bin/tap-junit -o output/tests -n TEST-results.xml
-      echo $?
-    displayName: 'run tests'    
+  - bash: |
+      node tests_new.js --pythonBin $(pythonBin) | ./node_modules/tap-junit/bin/tap-junit -o output/tests -n python$(pythonVersion)-TEST-results.xml
+    displayName: 'run tests'   
+    continueOnError: "true" 
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit, cTest
-      testResultsFiles: '**/TEST-results.xml'     
+      testResultsFiles: '**/*-TEST-results.xml'    
 
