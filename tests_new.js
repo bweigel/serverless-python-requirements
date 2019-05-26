@@ -241,14 +241,13 @@ test(`${testParams.pythonBin} doesn't package bottle with noDeploy option`, t =>
 });
 
 test(
-  `${testParams.pythonBin} can package flask with dockerizePip option`,
+  `can package flask with dockerizePip option`,
   t => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
     sls([
       '--dockerizePip=true',
-      `--pythonBin=${testParams.pythonBin}`,
        'package'
       ]);
 
@@ -264,14 +263,13 @@ test(
 );
 
 test(
-  `${testParams.pythonBin} can package flask with slim & dockerizePip option`,
+  `can package flask with slim & dockerizePip option`,
   t => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
     sls([
       '--dockerizePip=true', 
-    `--pythonBin=${testParams.pythonBin}`,
     '--slim=true',
      'package'
     ]);
@@ -292,7 +290,7 @@ test(
 );
 
 test(
-  `${testParams.pythonBin} can package flask with slim & dockerizePip & slimPatterns options`,
+  `can package flask with slim & dockerizePip & slimPatterns options`,
   t => {
     process.chdir('tests/base');
 
@@ -300,7 +298,6 @@ test(
     const path = npm(['pack', '../..']);
     npm(['i', path]);
     sls(['--dockerizePip=true',
-    `--pythonBin=${testParams.pythonBin}`,
      '--slim=true', 'package']);
     const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
@@ -320,13 +317,12 @@ test(
 );
 
 test(
-  `${testParams.pythonBin} can package flask with zip & dockerizePip option`,
+  `can package flask with zip & dockerizePip option`,
   t => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
     sls(['--dockerizePip=true',
-    `--pythonBin=${testParams.pythonBin}`,
      '--zip=true', 'package']);
 
     const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
@@ -355,13 +351,12 @@ test(
 );
 
 test(
-  `${testParams.pythonBin} can package flask with zip & slim & dockerizePip option`,
+  `can package flask with zip & slim & dockerizePip option`,
   t => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
     sls(['--dockerizePip=true', 
-    `--pythonBin=${testParams.pythonBin}`,
     '--zip=true', '--slim=true', 'package']);
 
     const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
@@ -674,13 +669,13 @@ test(`${testParams.pythonBin} can package flask in a project with a space in it`
 });
 
 test(
-  `${testParams.pythonBin} can package flask in a project with a space in it with docker`,
+  `can package flask in a project with a space in it with docker`,
   t => {
     copySync('tests/base', 'tests/base with a space');
     process.chdir('tests/base with a space');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
-    sls(['--dockerizePip=true', `--pythonBin=${testParams.pythonBin}`,  'package']);
+    sls(['--dockerizePip=true', 'package']);
     const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
     t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
@@ -763,14 +758,13 @@ test(`${testParams.pythonBin} can package flask with slim, slimPatterns & slimPa
 });
 
 test(
-  `${testParams.pythonBin} can package flask with slim & dockerizePip & slimPatterns & slimPatternsAppendDefaults=false options`,
+  `can package flask with slim & dockerizePip & slimPatterns & slimPatternsAppendDefaults=false options`,
   t => {
     process.chdir('tests/base');
     copySync('_slimPatterns.yml', 'slimPatterns.yml');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
     sls([
-      `--pythonBin=${testParams.pythonBin}`,
       '--dockerizePip=true',
       '--slim=true',
       '--slimPatternsAppendDefaults=false',
