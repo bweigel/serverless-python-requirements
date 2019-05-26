@@ -807,26 +807,26 @@ test(`pipenv ${testParams.pythonBin} can package flask with slim & slimPatterns 
   t.end();
 });
 
-// test('poetry py3.6 can package flask with slim & slimPatterns & slimPatternsAppendDefaults=false  option', t => {
-//   process.chdir('tests/poetry');
-//   copySync('_slimPatterns.yml', 'slimPatterns.yml');
-//   const path = npm(['pack', '../..']);
-//   npm(['i', path]);
+test(`poetry ${testParams.pythonBin} can package flask with slim & slimPatterns & slimPatternsAppendDefaults=false option`, t => {
+  process.chdir('tests/poetry');
+  copySync('_slimPatterns.yml', 'slimPatterns.yml');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
 
-//   sls(['--slim=true', '--slimPatternsAppendDefaults=false', 'package']);
-//   const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
-//   t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
-//   t.true(
-//     zipfiles.filter(filename => filename.endsWith('.pyc')).length >= 1,
-//     'pyc files are packaged'
-//   );
-//   t.deepEqual(
-//     zipfiles.filter(filename => filename.endsWith('__main__.py')),
-//     [],
-//     '__main__.py files are NOT packaged'
-//   );
-//   t.end();
-// });
+  sls([`--pythonBin=${testParams.pythonBin}`, '--slim=true', '--slimPatternsAppendDefaults=false', 'package']);
+  const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
+  t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
+  t.true(
+    zipfiles.filter(filename => filename.endsWith('.pyc')).length >= 1,
+    'pyc files are packaged'
+  );
+  t.deepEqual(
+    zipfiles.filter(filename => filename.endsWith('__main__.py')),
+    [],
+    '__main__.py files are NOT packaged'
+  );
+  t.end();
+});
 
 test(`${testParams.pythonBin} can package flask with package individually option`, t => {
   process.chdir('tests/base');
@@ -911,432 +911,284 @@ test(`${testParams.pythonBin} can package flask with package individually option
   t.end();
 });
 
-// test(`${testParams.pythonBin} can package flask with package individually & slim option', t => {
-//   process.chdir('tests/base');
-//   const path = npm(['pack', '../..']);
-//   npm(['i', path]);
-//   sls(['--individually=true', '--slim=true', 'package']);
+test(`${testParams.pythonBin} can package flask with package individually & slim option`, t => {
+  process.chdir('tests/base');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls([`--pythonBin=${testParams.pythonBin}`, '--individually=true', '--slim=true', 'package']);
 
-//   const zipfiles_hello = listZipFiles('.serverless/hello.zip');
-//   t.true(
-//     zipfiles_hello.includes('handler.py'),
-//     'handler.py is packaged in function hello'
-//   );
-//   t.deepEqual(
-//     zipfiles_hello.filter(filename => filename.endsWith('.pyc')),
-//     [],
-//     'no pyc files packaged in function hello'
-//   );
-//   t.true(
-//     zipfiles_hello.includes(`flask${sep}__init__.py`),
-//     'flask is packaged in function hello'
-//   );
-//   t.false(
-//     zipfiles_hello.includes(`dataclasses.py`),
-//     'dataclasses is NOT packaged in function hello'
-//   );
+  const zipfiles_hello = listZipFiles('.serverless/hello.zip');
+  t.true(
+    zipfiles_hello.includes('handler.py'),
+    'handler.py is packaged in function hello'
+  );
+  t.deepEqual(
+    zipfiles_hello.filter(filename => filename.endsWith('.pyc')),
+    [],
+    'no pyc files packaged in function hello'
+  );
+  t.true(
+    zipfiles_hello.includes(`flask${sep}__init__.py`),
+    'flask is packaged in function hello'
+  );
+  t.false(
+    zipfiles_hello.includes(`dataclasses.py`),
+    'dataclasses is NOT packaged in function hello'
+  );
 
-//   const zipfiles_hello2 = listZipFiles('.serverless/hello2.zip');
-//   t.true(
-//     zipfiles_hello2.includes('handler.py'),
-//     'handler.py is packaged in function hello2'
-//   );
-//   t.deepEqual(
-//     zipfiles_hello2.filter(filename => filename.endsWith('.pyc')),
-//     [],
-//     'no pyc files packaged in function hello2'
-//   );
-//   t.true(
-//     zipfiles_hello2.includes(`flask${sep}__init__.py`),
-//     'flask is packaged in function hello2'
-//   );
-//   t.false(
-//     zipfiles_hello2.includes(`dataclasses.py`),
-//     'dataclasses is NOT packaged in function hello2'
-//   );
+  const zipfiles_hello2 = listZipFiles('.serverless/hello2.zip');
+  t.true(
+    zipfiles_hello2.includes('handler.py'),
+    'handler.py is packaged in function hello2'
+  );
+  t.deepEqual(
+    zipfiles_hello2.filter(filename => filename.endsWith('.pyc')),
+    [],
+    'no pyc files packaged in function hello2'
+  );
+  t.true(
+    zipfiles_hello2.includes(`flask${sep}__init__.py`),
+    'flask is packaged in function hello2'
+  );
+  t.false(
+    zipfiles_hello2.includes(`dataclasses.py`),
+    'dataclasses is NOT packaged in function hello2'
+  );
 
-//   const zipfiles_hello3 = listZipFiles('.serverless/hello3.zip');
-//   t.true(
-//     zipfiles_hello3.includes('handler.py'),
-//     'handler.py is packaged in function hello3'
-//   );
-//   t.deepEqual(
-//     zipfiles_hello3.filter(filename => filename.endsWith('.pyc')),
-//     [],
-//     'no pyc files packaged in function hello3'
-//   );
-//   t.false(
-//     zipfiles_hello3.includes(`flask${sep}__init__.py`),
-//     'flask is NOT packaged in function hello3'
-//   );
+  const zipfiles_hello3 = listZipFiles('.serverless/hello3.zip');
+  t.true(
+    zipfiles_hello3.includes('handler.py'),
+    'handler.py is packaged in function hello3'
+  );
+  t.deepEqual(
+    zipfiles_hello3.filter(filename => filename.endsWith('.pyc')),
+    [],
+    'no pyc files packaged in function hello3'
+  );
+  t.false(
+    zipfiles_hello3.includes(`flask${sep}__init__.py`),
+    'flask is NOT packaged in function hello3'
+  );
 
-//   const zipfiles_hello4 = listZipFiles(
-//     '.serverless/fn2-sls-py-req-test-dev-hello4.zip'
-//   );
-//   t.true(
-//     zipfiles_hello4.includes('fn2_handler.py'),
-//     'fn2_handler is packaged in the zip-root in function hello4'
-//   );
-//   t.true(
-//     zipfiles_hello4.includes(`dataclasses.py`),
-//     'dataclasses is packaged in function hello4'
-//   );
-//   t.false(
-//     zipfiles_hello4.includes(`flask${sep}__init__.py`),
-//     'flask is NOT packaged in function hello4'
-//   );
-//   t.deepEqual(
-//     zipfiles_hello4.filter(filename => filename.endsWith('.pyc')),
-//     [],
-//     'no pyc files packaged in function hello4'
-//   );
+  const zipfiles_hello4 = listZipFiles(
+    '.serverless/fn2-sls-py-req-test-dev-hello4.zip'
+  );
+  t.true(
+    zipfiles_hello4.includes('fn2_handler.py'),
+    'fn2_handler is packaged in the zip-root in function hello4'
+  );
+  t.true(
+    zipfiles_hello4.includes(`dataclasses.py`),
+    'dataclasses is packaged in function hello4'
+  );
+  t.false(
+    zipfiles_hello4.includes(`flask${sep}__init__.py`),
+    'flask is NOT packaged in function hello4'
+  );
+  t.deepEqual(
+    zipfiles_hello4.filter(filename => filename.endsWith('.pyc')),
+    [],
+    'no pyc files packaged in function hello4'
+  );
 
-//   t.end();
-// });
+  t.end();
+});
 
-// test('py2.7 can package flask with package individually option', t => {
-//   process.chdir('tests/base');
-//   const path = npm(['pack', '../..']);
-//   npm(['i', path]);
-//   sls(['--individually=true', '--runtime=python2.7', 'package']);
 
-//   const zipfiles_hello = listZipFiles('.serverless/hello.zip');
-//   t.true(
-//     zipfiles_hello.includes('handler.py'),
-//     'handler.py is packaged in function hello'
-//   );
-//   t.true(
-//     zipfiles_hello.includes(`flask${sep}__init__.py`),
-//     'flask is packaged in function hello'
-//   );
-//   t.false(
-//     zipfiles_hello.includes(`dataclasses.py`),
-//     'dataclasses is NOT packaged in function hello'
-//   );
+test(`${testParams.pythonBin} can package only requirements of module`, t => {
+  process.chdir('tests/individually');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls([`--pythonBin=${testParams.pythonBin}`, 'package']);
 
-//   const zipfiles_hello2 = listZipFiles('.serverless/hello2.zip');
-//   t.true(
-//     zipfiles_hello2.includes('handler.py'),
-//     'handler.py is packaged in function hello2'
-//   );
-//   t.true(
-//     zipfiles_hello2.includes(`flask${sep}__init__.py`),
-//     'flask is packaged in function hello2'
-//   );
-//   t.false(
-//     zipfiles_hello2.includes(`dataclasses.py`),
-//     'dataclasses is NOT packaged in function hello2'
-//   );
+  const zipfiles_hello = listZipFiles(
+    '.serverless/module1-sls-py-req-test-indiv-dev-hello1.zip'
+  );
+  t.true(
+    zipfiles_hello.includes('handler1.py'),
+    'handler1.py is packaged at root level in function hello1'
+  );
+  t.false(
+    zipfiles_hello.includes('handler2.py'),
+    'handler2.py is NOT packaged at root level in function hello1'
+  );
+  t.true(
+    zipfiles_hello.includes(`pyaml${sep}__init__.py`),
+    'pyaml is packaged in function hello1'
+  );
+  t.false(
+    zipfiles_hello.includes(`flask${sep}__init__.py`),
+    'flask is NOT packaged in function hello1'
+  );
 
-//   const zipfiles_hello3 = listZipFiles('.serverless/hello3.zip');
-//   t.true(
-//     zipfiles_hello3.includes('handler.py'),
-//     'handler.py is packaged in function hello3'
-//   );
-//   t.false(
-//     zipfiles_hello3.includes(`flask${sep}__init__.py`),
-//     'flask is NOT packaged in function hello3'
-//   );
-//   t.false(
-//     zipfiles_hello3.includes(`dataclasses.py`),
-//     'dataclasses is NOT packaged in function hello3'
-//   );
+  const zipfiles_hello2 = listZipFiles(
+    '.serverless/module2-sls-py-req-test-indiv-dev-hello2.zip'
+  );
+  t.true(
+    zipfiles_hello2.includes('handler2.py'),
+    'handler2.py is packaged at root level in function hello2'
+  );
+  t.false(
+    zipfiles_hello2.includes('handler1.py'),
+    'handler1.py is NOT packaged at root level in function hello2'
+  );
+  t.false(
+    zipfiles_hello2.includes(`pyaml${sep}__init__.py`),
+    'pyaml is NOT packaged in function hello2'
+  );
+  t.true(
+    zipfiles_hello2.includes(`flask${sep}__init__.py`),
+    'flask is packaged in function hello2'
+  );
 
-//   const zipfiles_hello4 = listZipFiles(
-//     '.serverless/fn2-sls-py-req-test-dev-hello4.zip'
-//   );
-//   t.true(
-//     zipfiles_hello4.includes('fn2_handler.py'),
-//     'fn2_handler is packaged in the zip-root in function hello4'
-//   );
-//   t.true(
-//     zipfiles_hello4.includes(`dataclasses.py`),
-//     'dataclasses is packaged in function hello4'
-//   );
-//   t.false(
-//     zipfiles_hello4.includes(`flask${sep}__init__.py`),
-//     'flask is NOT packaged in function hello4'
-//   );
+  t.end();
+});
 
-//   t.end();
-// });
+test(`${testParams.pythonBin} can package lambda-decorators using vendor and invidiually option`, t => {
+  process.chdir('tests/base');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls([`--pythonBin=${testParams.pythonBin}`, '--individually=true', '--vendor=./vendor', 'package']);
 
-// test('py2.7 can package flask with package individually & slim option', t => {
-//   process.chdir('tests/base');
-//   const path = npm(['pack', '../..']);
-//   npm(['i', path]);
-//   sls(['--individually=true', '--runtime=python2.7', '--slim=true', 'package']);
+  const zipfiles_hello = listZipFiles('.serverless/hello.zip');
+  t.true(
+    zipfiles_hello.includes('handler.py'),
+    'handler.py is packaged at root level in function hello'
+  );
+  t.true(
+    zipfiles_hello.includes(`flask${sep}__init__.py`),
+    'flask is packaged in function hello'
+  );
+  t.true(
+    zipfiles_hello.includes(`lambda_decorators.py`),
+    'lambda_decorators.py is packaged in function hello'
+  );
+  t.false(
+    zipfiles_hello.includes(`dataclasses.py`),
+    'dataclasses is NOT packaged in function hello'
+  );
 
-//   const zipfiles_hello = listZipFiles('.serverless/hello.zip');
-//   t.true(
-//     zipfiles_hello.includes('handler.py'),
-//     'handler.py is packaged in function hello'
-//   );
-//   t.deepEqual(
-//     zipfiles_hello.filter(filename => filename.endsWith('.pyc')),
-//     [],
-//     'no pyc files packaged in function hello'
-//   );
-//   t.true(
-//     zipfiles_hello.includes(`flask${sep}__init__.py`),
-//     'flask is packaged in function hello'
-//   );
-//   t.false(
-//     zipfiles_hello.includes(`dataclasses.py`),
-//     'dataclasses is NOT packaged in function hello'
-//   );
+  const zipfiles_hello2 = listZipFiles('.serverless/hello2.zip');
+  t.true(
+    zipfiles_hello2.includes('handler.py'),
+    'handler.py is packaged at root level in function hello2'
+  );
+  t.true(
+    zipfiles_hello2.includes(`flask${sep}__init__.py`),
+    'flask is packaged in function hello2'
+  );
+  t.true(
+    zipfiles_hello2.includes(`lambda_decorators.py`),
+    'lambda_decorators.py is packaged in function hello2'
+  );
+  t.false(
+    zipfiles_hello2.includes(`dataclasses.py`),
+    'dataclasses is NOT packaged in function hello2'
+  );
 
-//   const zipfiles_hello2 = listZipFiles('.serverless/hello2.zip');
-//   t.true(
-//     zipfiles_hello2.includes('handler.py'),
-//     'handler.py is packaged in function hello2'
-//   );
-//   t.deepEqual(
-//     zipfiles_hello2.filter(filename => filename.endsWith('.pyc')),
-//     [],
-//     'no pyc files packaged in function hello2'
-//   );
-//   t.true(
-//     zipfiles_hello2.includes(`flask${sep}__init__.py`),
-//     'flask is packaged in function hello2'
-//   );
-//   t.false(
-//     zipfiles_hello2.includes(`dataclasses.py`),
-//     'dataclasses is NOT packaged in function hello2'
-//   );
+  const zipfiles_hello3 = listZipFiles('.serverless/hello3.zip');
+  t.true(
+    zipfiles_hello3.includes('handler.py'),
+    'handler.py is packaged at root level in function hello3'
+  );
+  t.false(
+    zipfiles_hello3.includes(`flask${sep}__init__.py`),
+    'flask is NOT packaged in function hello3'
+  );
+  t.false(
+    zipfiles_hello3.includes(`lambda_decorators.py`),
+    'lambda_decorators.py is NOT packaged in function hello3'
+  );
+  t.false(
+    zipfiles_hello3.includes(`dataclasses.py`),
+    'dataclasses is NOT packaged in function hello3'
+  );
 
-//   const zipfiles_hello3 = listZipFiles('.serverless/hello3.zip');
-//   t.true(
-//     zipfiles_hello3.includes('handler.py'),
-//     'handler.py is packaged in function hello3'
-//   );
-//   t.deepEqual(
-//     zipfiles_hello3.filter(filename => filename.endsWith('.pyc')),
-//     [],
-//     'no pyc files packaged in function hello3'
-//   );
-//   t.false(
-//     zipfiles_hello3.includes(`flask${sep}__init__.py`),
-//     'flask is NOT packaged in function hello3'
-//   );
-//   t.false(
-//     zipfiles_hello3.includes(`dataclasses.py`),
-//     'dataclasses is NOT packaged in function hello3'
-//   );
+  const zipfiles_hello4 = listZipFiles(
+    '.serverless/fn2-sls-py-req-test-dev-hello4.zip'
+  );
+  t.true(
+    zipfiles_hello4.includes('fn2_handler.py'),
+    'fn2_handler is packaged in the zip-root in function hello4'
+  );
+  t.true(
+    zipfiles_hello4.includes(`dataclasses.py`),
+    'dataclasses is packaged in function hello4'
+  );
+  t.false(
+    zipfiles_hello4.includes(`flask${sep}__init__.py`),
+    'flask is NOT packaged in function hello4'
+  );
+  t.end();
+});
 
-//   const zipfiles_hello4 = listZipFiles(
-//     '.serverless/fn2-sls-py-req-test-dev-hello4.zip'
-//   );
-//   t.true(
-//     zipfiles_hello4.includes('fn2_handler.py'),
-//     'fn2_handler is packaged in the zip-root in function hello4'
-//   );
-//   t.true(
-//     zipfiles_hello4.includes(`dataclasses.py`),
-//     'dataclasses is packaged in function hello4'
-//   );
-//   t.false(
-//     zipfiles_hello4.includes(`flask${sep}__init__.py`),
-//     'flask is NOT packaged in function hello4'
-//   );
+test(
+  "Don't nuke execute perms when using individually",
+  t => {
+    process.chdir('tests/individually');
+    const path = npm(['pack', '../..']);
+    const perm = '775';
+    writeFileSync(`module1${sep}foobar`, '');
+    chmodSync(`module1${sep}foobar`, perm);
 
-//   t.end();
-// });
+    npm(['i', path]);
+    sls([`--pythonBin=${testParams.pythonBin}`, 'package']);
 
-// test(`${testParams.pythonBin} can package only requirements of module', t => {
-//   process.chdir('tests/individually');
-//   const path = npm(['pack', '../..']);
-//   npm(['i', path]);
-//   sls(['package']);
+    const zipfiles_hello1 = listZipFilesWithMetaData('.serverless/hello1.zip');
 
-//   const zipfiles_hello = listZipFiles(
-//     '.serverless/module1-sls-py-req-test-indiv-dev-hello1.zip'
-//   );
-//   t.true(
-//     zipfiles_hello.includes('handler1.py'),
-//     'handler1.py is packaged at root level in function hello1'
-//   );
-//   t.false(
-//     zipfiles_hello.includes('handler2.py'),
-//     'handler2.py is NOT packaged at root level in function hello1'
-//   );
-//   t.true(
-//     zipfiles_hello.includes(`pyaml${sep}__init__.py`),
-//     'pyaml is packaged in function hello1'
-//   );
-//   t.false(
-//     zipfiles_hello.includes(`flask${sep}__init__.py`),
-//     'flask is NOT packaged in function hello1'
-//   );
+    t.true(
+      zipfiles_hello1['module1/foobar'].unixPermissions
+        .toString(8)
+        .slice(3, 6) === perm,
+      'foobar has retained its executable file permissions'
+    );
 
-//   const zipfiles_hello2 = listZipFiles(
-//     '.serverless/module2-sls-py-req-test-indiv-dev-hello2.zip'
-//   );
-//   t.true(
-//     zipfiles_hello2.includes('handler2.py'),
-//     'handler2.py is packaged at root level in function hello2'
-//   );
-//   t.false(
-//     zipfiles_hello2.includes('handler1.py'),
-//     'handler1.py is NOT packaged at root level in function hello2'
-//   );
-//   t.false(
-//     zipfiles_hello2.includes(`pyaml${sep}__init__.py`),
-//     'pyaml is NOT packaged in function hello2'
-//   );
-//   t.true(
-//     zipfiles_hello2.includes(`flask${sep}__init__.py`),
-//     'flask is packaged in function hello2'
-//   );
+    const zipfiles_hello2 = listZipFilesWithMetaData('.serverless/module2-sls-py-req-test-indiv-dev-hello2.zip');
+    const flaskPerm = statSync('.serverless/module2/requirements/bin/flask').mode;
 
-//   t.end();
-// });
+    t.true(
+      zipfiles_hello2['bin/flask'].unixPermissions === flaskPerm,
+      'bin/flask has retained its executable file permissions'
+    );
 
-// test(`${testParams.pythonBin} can package lambda-decorators using vendor and invidiually option', t => {
-//   process.chdir('tests/base');
-//   const path = npm(['pack', '../..']);
-//   npm(['i', path]);
-//   sls(['--individually=true', '--vendor=./vendor', 'package']);
+    t.end();
+  },
+  { skip: process.platform === 'win32' }
+);
 
-//   const zipfiles_hello = listZipFiles('.serverless/hello.zip');
-//   t.true(
-//     zipfiles_hello.includes('handler.py'),
-//     'handler.py is packaged at root level in function hello'
-//   );
-//   t.true(
-//     zipfiles_hello.includes(`flask${sep}__init__.py`),
-//     'flask is packaged in function hello'
-//   );
-//   t.true(
-//     zipfiles_hello.includes(`lambda_decorators.py`),
-//     'lambda_decorators.py is packaged in function hello'
-//   );
-//   t.false(
-//     zipfiles_hello.includes(`dataclasses.py`),
-//     'dataclasses is NOT packaged in function hello'
-//   );
+test(
+  "Don't nuke execute perms when using individually w/docker",
+  t => {
+    process.chdir('tests/individually');
+    const path = npm(['pack', '../..']);
+    const perm = '775';
+    writeFileSync(`module1${sep}foobar`, '', { mode: perm });
+    chmodSync(`module1${sep}foobar`, perm);
 
-//   const zipfiles_hello2 = listZipFiles('.serverless/hello2.zip');
-//   t.true(
-//     zipfiles_hello2.includes('handler.py'),
-//     'handler.py is packaged at root level in function hello2'
-//   );
-//   t.true(
-//     zipfiles_hello2.includes(`flask${sep}__init__.py`),
-//     'flask is packaged in function hello2'
-//   );
-//   t.true(
-//     zipfiles_hello2.includes(`lambda_decorators.py`),
-//     'lambda_decorators.py is packaged in function hello2'
-//   );
-//   t.false(
-//     zipfiles_hello2.includes(`dataclasses.py`),
-//     'dataclasses is NOT packaged in function hello2'
-//   );
+    npm(['i', path]);
+    sls([`--pythonBin=${testParams.pythonBin}`, '--dockerizePip=true', 'package']);
 
-//   const zipfiles_hello3 = listZipFiles('.serverless/hello3.zip');
-//   t.true(
-//     zipfiles_hello3.includes('handler.py'),
-//     'handler.py is packaged at root level in function hello3'
-//   );
-//   t.false(
-//     zipfiles_hello3.includes(`flask${sep}__init__.py`),
-//     'flask is NOT packaged in function hello3'
-//   );
-//   t.false(
-//     zipfiles_hello3.includes(`lambda_decorators.py`),
-//     'lambda_decorators.py is NOT packaged in function hello3'
-//   );
-//   t.false(
-//     zipfiles_hello3.includes(`dataclasses.py`),
-//     'dataclasses is NOT packaged in function hello3'
-//   );
+    const zipfiles_hello = listZipFilesWithMetaData('.serverless/hello1.zip');
 
-//   const zipfiles_hello4 = listZipFiles(
-//     '.serverless/fn2-sls-py-req-test-dev-hello4.zip'
-//   );
-//   t.true(
-//     zipfiles_hello4.includes('fn2_handler.py'),
-//     'fn2_handler is packaged in the zip-root in function hello4'
-//   );
-//   t.true(
-//     zipfiles_hello4.includes(`dataclasses.py`),
-//     'dataclasses is packaged in function hello4'
-//   );
-//   t.false(
-//     zipfiles_hello4.includes(`flask${sep}__init__.py`),
-//     'flask is NOT packaged in function hello4'
-//   );
-//   t.end();
-// });
+    t.true(
+      zipfiles_hello['module1/foobar'].unixPermissions
+        .toString(8)
+        .slice(3, 6) === perm,
+      'foobar has retained its executable file permissions'
+    );
 
-// test(
-//   "Don't nuke execute perms when using individually",
-//   t => {
-//     process.chdir('tests/individually');
-//     const path = npm(['pack', '../..']);
-//     const perm = '775';
-//     writeFileSync(`module1${sep}foobar`, '');
-//     chmodSync(`module1${sep}foobar`, perm);
+    const zipfiles_hello2 = listZipFilesWithMetaData('.serverless/module2-sls-py-req-test-indiv-dev-hello2.zip');
+    const flaskPerm = statSync('.serverless/module2/requirements/bin/flask').mode;
 
-//     npm(['i', path]);
-//     sls(['package']);
+    t.true(
+      zipfiles_hello2['bin/flask'].unixPermissions === flaskPerm,
+      'bin/flask has retained its executable file permissions'
+    );
 
-//     const zipfiles_hello1 = listZipFilesWithMetaData('.serverless/hello1.zip');
-
-//     t.true(
-//       zipfiles_hello1['module1/foobar'].unixPermissions
-//         .toString(8)
-//         .slice(3, 6) === perm,
-//       'foobar has retained its executable file permissions'
-//     );
-
-//     const zipfiles_hello2 = listZipFilesWithMetaData('.serverless/module2-sls-py-req-test-indiv-dev-hello2.zip');
-//     const flaskPerm = statSync('.serverless/module2/requirements/bin/flask').mode;
-
-//     t.true(
-//       zipfiles_hello2['bin/flask'].unixPermissions === flaskPerm,
-//       'bin/flask has retained its executable file permissions'
-//     );
-
-//     t.end();
-//   },
-//   { skip: process.platform === 'win32' }
-// );
-
-// test(
-//   "Don't nuke execute perms when using individually w/docker",
-//   t => {
-//     process.chdir('tests/individually');
-//     const path = npm(['pack', '../..']);
-//     const perm = '775';
-//     writeFileSync(`module1${sep}foobar`, '', { mode: perm });
-//     chmodSync(`module1${sep}foobar`, perm);
-
-//     npm(['i', path]);
-//     sls(['--dockerizePip=true', 'package']);
-
-//     const zipfiles_hello = listZipFilesWithMetaData('.serverless/hello1.zip');
-
-//     t.true(
-//       zipfiles_hello['module1/foobar'].unixPermissions
-//         .toString(8)
-//         .slice(3, 6) === perm,
-//       'foobar has retained its executable file permissions'
-//     );
-
-//     const zipfiles_hello2 = listZipFilesWithMetaData('.serverless/module2-sls-py-req-test-indiv-dev-hello2.zip');
-//     const flaskPerm = statSync('.serverless/module2/requirements/bin/flask').mode;
-
-//     t.true(
-//       zipfiles_hello2['bin/flask'].unixPermissions === flaskPerm,
-//       'bin/flask has retained its executable file permissions'
-//     );
-
-//     t.end();
-//   },
-//   { skip: !canUseDocker() || process.platform === 'win32' }
-// );
+    t.end();
+  },
+  { skip: !canUseDocker() || process.platform === 'win32' }
+);
 
 // test(`${testParams.pythonBin} uses download cache with useDownloadCache option', t => {
 //   process.chdir('tests/base');

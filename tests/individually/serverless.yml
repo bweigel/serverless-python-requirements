@@ -10,8 +10,10 @@ package:
 custom:
   pythonRequirements:
     dockerizePip: ${opt:dockerizePip, self:custom.defaults.dockerizePip}
+    pythonBin: ${opt:pythonBin, self:custom.defaults.pythonBin}
   defaults:
     dockerizePip: false
+    pythonBin: python
 
 functions:
   hello1:
