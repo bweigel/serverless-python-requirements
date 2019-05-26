@@ -1,14 +1,13 @@
 const argv = require('yargs').argv;
 
-const getPythonBin = (version = 3) => {
-  if (![2, 3].includes(version)) throw new Error('version must be 2 or 3');
-  if (process.platform === 'win32')
-    return `c:/python${version === 2 ? '27' : '36'}-x64/python.exe`;
-  else return version === 2 ? 'python2.7' : 'python3.6';
+const getPythonBin = (python = "python3.6") => {
+  if (process.platform === 'win32' || process.platform === 'win64')
+    return `c:/${python.replace('.', '')}-x64/python.exe`;
+  else python;
 };
 
 const testParams = {
-  pythonBin: argv.pythonBin || getPythonBin()
+  pythonBin: getPythonBin(argv.pythonBin)
 };
 
 const crossSpawn = require('cross-spawn');
